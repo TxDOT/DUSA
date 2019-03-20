@@ -34,14 +34,15 @@
         #info {
             position: absolute;
             bottom: 1px;
-            right: 20px;
+            left: 20px;
+            /* right: 20px; */
             z-index: 50;
             color: #303030;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         }
         #logoff {
             position: absolute;
-            top: 3px;
+            bottom: 3px;
             right: 5px;
             z-index: 50;
             padding: 0 6px 0 6px;
@@ -49,10 +50,21 @@
             color: white;
             font-size: 1.2em;
         }
+        #basemapToggle {
+            position: absolute;
+            top: 150px;
+            right: 5px;
+            z-index: 50;
+            padding: 0 6px 0 6px;
+            background: #14385c;
+            color: white;
+            font-size: 1.0em;
+        }
         #user {
             position: absolute;
             bottom: 18px;
-            right: 20px;
+            left: 20px;
+            /* right: 20px; */
             z-index: 50;
             color: #303030;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -113,7 +125,7 @@
         #homeBtn {
             position: absolute;
             top: 90px;
-            left: 20px;
+            right: 20px;
             width: 33px;
             z-index: 50;
             padding-left: 3px;
@@ -124,7 +136,8 @@
             /*border-color: black;*/
         }
         #menuBtn {
-            position: absolute;
+            display: none;
+            /* position: absolute;
             top: 130px;
             left: 20px;
             width: 33px;
@@ -133,12 +146,11 @@
             padding-right: 3px;
             padding-top: 6px;
             padding-bottom: 4px;
-            margin: 0;
-            /*border-color: black;*/
+            margin: 0; */
         }
         #menuContainer {
             position: absolute;
-            top: 160px;
+            top: 30px;
             left: 15px;
             z-index: 50;
             padding: 0;
@@ -240,6 +252,30 @@
                 transform: scale(1) rotate(360deg);
             }
         }
+        .templatePicker {
+            border: none !important;
+            padding: 3px;
+            /* -o-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px; */
+            width: 155px;
+        }
+        .templatePicker .grid .dojoxGridCell {
+            border: 1px solid #337ab7;
+            border-color: #337ab7;
+            /* border-radius: 10px !important; */
+            /* outline: none; */
+        }
+        .templatePicker .grid .dojoxGridCellFocus {
+            border: 1px solid #337ab7 !important;
+        }
+        .esriSimpleSliderTL {
+            top: 20px !important;
+            right: 20px !important;
+            left: auto;
+        }
+
     </style>
 
     <script data-dojo-config="async:true, aliases: [
@@ -263,6 +299,8 @@
                 "esri/geometry/Point",
                 "esri/dijit/BasemapLayer",
                 "esri/layers/VectorTileLayer",
+                "esri/layers/WMTSLayer",
+                "esri/layers/WMTSLayerInfo",
                 //"esri/layers/ArcGISTiledMapServiceLayer",
                 "esri/config",
                 "esri/request",
@@ -305,7 +343,7 @@
                 "dojo/domReady!"
             ],
             function($, $ui,
-                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, /*Tiled,*/
+                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, WMTSLayer, WMTSLayerInfo,/*Tiled,*/
                 esriConfig, request, scaleUtils, webMercatorUtils, geodesicUtils, config, Query, QueryTask,
                 Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Basemap, BasemapGallery, GeometryService, Units,
                 Legend, TemplatePicker, AttributeInspector, InfoTemplate,
@@ -323,6 +361,7 @@
                     var displayLayers = []
                     var uploadedLayers;
                     var featureLayerEvents = [];
+                    var spm = true;
                     var previousBasemap;
                     var d = new Date();
                     var m = d.getMonth() + 1;
@@ -350,6 +389,25 @@
                     // setting style for initial basemap
                     // TxDOTVectorTileLayer.setStyle(vectorStyle);
                     map.addLayer(TxDOTVectorTileLayer);
+
+                    // Name server with CORS enabled for Google Imagery
+            			esri.config.defaults.io.corsEnabledServers.push ("https://txgi.tnris.org");
+
+            		// Google Imagery WMTS layer info
+            	        var GoogleLayerInfo = new WMTSLayerInfo({
+                	        identifier: "texas",
+                	        tileMatrixSet: "0to20",
+                	        format: "png"
+            	        });
+
+            	        var GoogleLayerOptions = {
+            	            serviceMode: "KVP",
+            	            layerInfo: GoogleLayerInfo
+            	        };
+
+            			// Add Google Imagery WMTS layer
+            	        var google = new WMTSLayer("https://txgi.tnris.org/login/path/pegasus-horizon-castro-comrade/wmts", GoogleLayerOptions);
+            	        google.id = "googleLayer";
 
 
 
@@ -407,6 +465,23 @@
                         basemapGallery.select(choice);
                     });
 
+                    // document.getElementById("basemapToggle").addEventListener("click", toggleBasemap);
+                    //
+                    // function toggleBasemap() {
+                    //     if (spm) {
+                    //         map.removeLayer(TxDOTVectorTileLayer);
+                    //         map.addLayer(google);
+                    //         document.getElementById("basemapToggle").innerHTML = "View <br> TxDOT <br> Map";
+                    //         spm = false;
+                    //     }
+                    //     else {
+                    //         spm = true;
+                    //         map.removeLayer(google);
+                    //         map.addLayer(TxDOTVectorTileLayer);
+                    //         document.getElementById("basemapToggle").innerHTML = "View <br> TxDOT <br> Imagery";
+                    //     }
+                    // }
+
                     ////CRI FEATURE LAYERS & EVENTS
                     var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0"; //swamp thang
                     var counties = new FeatureLayer(countiesURL, {
@@ -415,14 +490,15 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0";
+                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
                     // var crURL = "http://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads/FeatureServer/0";//swamp thang
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0";
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //dev version
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -566,7 +642,7 @@
                                 }, {
                                     'fieldName': "CHANGE",
                                     'label': "Update Type",
-                                    'isEditable': true
+                                    'isEditable': false
                                 }, {
                                     'fieldName': "STREET_NM",
                                     'label': "Full Street Name",
@@ -755,7 +831,8 @@
                         var tpCustom = new TemplatePicker({
                             featureLayers: templateLayers,
                             grouping: false,
-                            columns: 1,
+                            columns: 2,
+                            rows: 2,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
                         tpCustom.startup();
@@ -1159,6 +1236,20 @@
                         location.reload(true); // force reload on firefox
                         // window.history.back();
                     });
+                    $('#basemapToggle').click(function() {
+                        if (spm) {
+                            map.removeLayer(TxDOTVectorTileLayer);
+                            map.addLayer(google);
+                            $('#basemapToggle').html("View <br> TxDOT <br> Map");
+                            spm = false;
+                        }
+                        else {
+                            spm = true;
+                            map.removeLayer(google);
+                            map.addLayer(TxDOTVectorTileLayer);
+                            $('#basemapToggle').html("View <br> TxDOT <br> Imagery");
+                        }
+                    })
                     $('#clearDisplay').click(clearDisplay);
 
                     // ////inital sign in page for BOTH CR and LS
@@ -1481,14 +1572,15 @@
             <button id="homeBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <button id="logoff" type="button" class="btn btn-default">Log Off</button>
+            <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
             <span id="user"></span>
             <span id="info"></span>
-            <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
+            <!-- <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <div id="basemapPanel">
                 <div id="basemapContainer" class="container" style="width:100%;">
                     <div id="basemapGallery" class="row"></div>
                 </div>
-            </div>
+            </div> -->
         </div>
 
     </body>
