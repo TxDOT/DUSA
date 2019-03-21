@@ -60,11 +60,21 @@
             color: white;
             font-size: 1.0em;
         }
+        #googleLink {
+            position: absolute;
+            top: 240px;
+            right: 5px;
+            z-index: 50;
+            padding: 0 6px 0 6px;
+            background: #14385c;
+            color: white;
+            font-size: 1.0em;
+        }
         #user {
             position: absolute;
-            bottom: 18px;
-            left: 20px;
-            /* right: 20px; */
+            bottom: 30px;
+            /* left: 20px; */
+            right: 5px;
             z-index: 50;
             color: #303030;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -315,6 +325,7 @@
                 "esri/graphic",
                 "esri/layers/FeatureLayer",
                 "esri/dijit/Search",
+                "esri/dijit/Scalebar",
                 "esri/dijit/Basemap",
                 "esri/dijit/BasemapGallery",
                 "esri/tasks/GeometryService",
@@ -345,7 +356,7 @@
             function($, $ui,
                 Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, WMTSLayer, WMTSLayerInfo,/*Tiled,*/
                 esriConfig, request, scaleUtils, webMercatorUtils, geodesicUtils, config, Query, QueryTask,
-                Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Basemap, BasemapGallery, GeometryService, Units,
+                Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Scalebar, Basemap, BasemapGallery, GeometryService, Units,
                 Legend, TemplatePicker, AttributeInspector, InfoTemplate,
                 SimpleRenderer, SimpleFillSymbol, SimpleLineSymbol, Color, OAuthInfo, IdentityManager,
                 ready, parser, require, sniff, dom, on, array, lang, domConstruct, domStyle, dojoButton) {
@@ -498,7 +509,8 @@
                         outFields: ['*']
                     });
                     // var crURL = "http://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads/FeatureServer/0";//swamp thang
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //dev version
+                    // var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //2017 version
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //2018 dev version
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -526,6 +538,11 @@
                         showLabels: true,
                         outFields: ["*"]
                     });
+
+                    ////SCALEBAR
+                    var scalebar = new Scalebar({
+                        map: map,
+                      });
 
                     ////SEARCH WIDGET
                     var search = new Search({
@@ -1249,7 +1266,14 @@
                             map.addLayer(TxDOTVectorTileLayer);
                             $('#basemapToggle').html("View <br> TxDOT <br> Imagery");
                         }
-                    })
+                    });
+                    $("#googleLink").click(function() {
+                    	var ctr = map.extent.getCenter();
+                        var lat = ctr.getLatitude();
+                        var lon = ctr.getLongitude();
+                        var level = map.getLevel();
+                        window.open("https://www.google.com/maps/@"+lat+","+lon+","+level+"z");
+                    });
                     $('#clearDisplay').click(clearDisplay);
 
                     // ////inital sign in page for BOTH CR and LS
@@ -1573,6 +1597,7 @@
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <button id="logoff" type="button" class="btn btn-default">Log Off</button>
             <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
+            <button id="googleLink" type="button" class="btn btn-default">Jump To<br> Google <br>&nbsp</button>
             <span id="user"></span>
             <span id="info"></span>
             <!-- <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
