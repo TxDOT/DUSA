@@ -35,7 +35,6 @@
             position: absolute;
             bottom: 1px;
             left: 20px;
-            /* right: 20px; */
             z-index: 50;
             color: #303030;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
@@ -50,30 +49,28 @@
             color: white;
             font-size: 1.2em;
         }
-        #basemapToggle {
-            position: absolute;
+        #mapOptions {
+            padding-top: 30px;
+            display: inline-block;
+            width: 200px;
+        }
+        #basemapToggle,
+        #googleLink {
+            /* position: absolute;
             top: 150px;
             right: 5px;
-            z-index: 50;
-            padding: 0 6px 0 6px;
-            background: #14385c;
-            color: white;
-            font-size: 1.0em;
-        }
-        #googleLink {
-            position: absolute;
-            top: 240px;
-            right: 5px;
-            z-index: 50;
-            padding: 0 6px 0 6px;
-            background: #14385c;
-            color: white;
+            z-index: 50;*/
+            /* display: inline;
+            width: 160px; */
+            padding: 10px;
+            margin-top: 30px;
+            /* background: #14385c;
+            color: white; */
             font-size: 1.0em;
         }
         #user {
             position: absolute;
             bottom: 30px;
-            /* left: 20px; */
             right: 5px;
             z-index: 50;
             color: #303030;
@@ -285,6 +282,18 @@
             right: 20px !important;
             left: auto;
         }
+        #dijit_layout_ContentPane_1 {
+            width: 251px;
+        }
+        #borderDiv {
+            position:relative;
+            z-Index:999;
+            border:2px solid grey;
+            border-radius:5px;
+        }
+        #titlePane_titleBarNode > div > span.dijitInline.dijitArrowNode {
+            display: none;
+        }
 
     </style>
 
@@ -311,7 +320,6 @@
                 "esri/layers/VectorTileLayer",
                 "esri/layers/WMTSLayer",
                 "esri/layers/WMTSLayerInfo",
-                //"esri/layers/ArcGISTiledMapServiceLayer",
                 "esri/config",
                 "esri/request",
                 "esri/geometry/scaleUtils",
@@ -331,6 +339,7 @@
                 "esri/tasks/GeometryService",
                 "esri/units",
                 "esri/dijit/Legend",
+                "esri/dijit/Measurement",
                 "esri/dijit/editing/TemplatePicker",
                 "esri/dijit/AttributeInspector",
                 "esri/InfoTemplate",
@@ -351,13 +360,17 @@
                 "dojo/dom-construct",
                 "dojo/dom-style",
                 "dijit/form/Button",
-                "dojo/domReady!"
+                "dojo/domReady!",
+                "dijit/layout/BorderContainer",
+                "dijit/layout/ContentPane",
+                "dijit/TitlePane",
+                "dijit/form/CheckBox"
             ],
             function($, $ui,
-                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, WMTSLayer, WMTSLayerInfo,/*Tiled,*/
+                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, WMTSLayer, WMTSLayerInfo,
                 esriConfig, request, scaleUtils, webMercatorUtils, geodesicUtils, config, Query, QueryTask,
                 Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Scalebar, Basemap, BasemapGallery, GeometryService, Units,
-                Legend, TemplatePicker, AttributeInspector, InfoTemplate,
+                Legend, Measurement, TemplatePicker, AttributeInspector, InfoTemplate,
                 SimpleRenderer, SimpleFillSymbol, SimpleLineSymbol, Color, OAuthInfo, IdentityManager,
                 ready, parser, require, sniff, dom, on, array, lang, domConstruct, domStyle, dojoButton) {
                 ready(function() {
@@ -385,7 +398,7 @@
                     var geomServ = new GeometryService("https://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); //mw
                     var map = new Map("divMap", {
                         center: [-100, 32],
-                        zoom: 6, //zoom: 7, -mw
+                        zoom: 6,
                         logo: false,
                         showLabels: true
                     });
@@ -476,23 +489,6 @@
                         basemapGallery.select(choice);
                     });
 
-                    // document.getElementById("basemapToggle").addEventListener("click", toggleBasemap);
-                    //
-                    // function toggleBasemap() {
-                    //     if (spm) {
-                    //         map.removeLayer(TxDOTVectorTileLayer);
-                    //         map.addLayer(google);
-                    //         document.getElementById("basemapToggle").innerHTML = "View <br> TxDOT <br> Map";
-                    //         spm = false;
-                    //     }
-                    //     else {
-                    //         spm = true;
-                    //         map.removeLayer(google);
-                    //         map.addLayer(TxDOTVectorTileLayer);
-                    //         document.getElementById("basemapToggle").innerHTML = "View <br> TxDOT <br> Imagery";
-                    //     }
-                    // }
-
                     ////CRI FEATURE LAYERS & EVENTS
                     var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0"; //swamp thang
                     var counties = new FeatureLayer(countiesURL, {
@@ -543,6 +539,21 @@
                     var scalebar = new Scalebar({
                         map: map,
                       });
+
+                    ////MEASURE TOOL
+                    var measurement = new Measurement({
+                        map: map
+                    }, dom.byId("measurementDiv"));
+                    measurement.startup();
+
+                    // document.getElementById("clear").addEventListener("click",clearMeasure);
+                    //
+                    // function clearMeasure() {
+                    //     measurement.setTool("area", false);
+                    //     measurement.setTool("distance", false);
+                    //     measurement.setTool("location", false);
+                    //     measurement.clearResult();
+                    // }
 
                     ////SEARCH WIDGET
                     var search = new Search({
@@ -1257,22 +1268,28 @@
                         if (spm) {
                             map.removeLayer(TxDOTVectorTileLayer);
                             map.addLayer(google);
-                            $('#basemapToggle').html("View <br> TxDOT <br> Map");
+                            $('#basemapToggle').html("View TxDOT Map");
                             spm = false;
                         }
                         else {
                             spm = true;
                             map.removeLayer(google);
                             map.addLayer(TxDOTVectorTileLayer);
-                            $('#basemapToggle').html("View <br> TxDOT <br> Imagery");
+                            $('#basemapToggle').html("View TxDOT Imagery");
                         }
                     });
-                    $("#googleLink").click(function() {
+                    $('#googleLink').click(function() {
                     	var ctr = map.extent.getCenter();
                         var lat = ctr.getLatitude();
                         var lon = ctr.getLongitude();
                         var level = map.getLevel();
                         window.open("https://www.google.com/maps/@"+lat+","+lon+","+level+"z");
+                    });
+                    $('#clearMeasure').click(function() {
+                        measurement.setTool("area", false);
+                        measurement.setTool("distance", false);
+                        measurement.setTool("location", false);
+                        measurement.clearResult();
                     });
                     $('#clearDisplay').click(clearDisplay);
 
@@ -1522,7 +1539,8 @@
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body" style="text-align:center;">
-                                    <p style="font-weight:bold;">Options</p>
+                                    <!-- <p style="font-weight:bold;">Options</p> -->
+                                    <p style="font-weight:bold;text-align:center;color:red;">Note: This is an OPTIONAL Step for GIS Users</p>
                                     <p style="text-align:left;">1. Empty schema template shapefile<br>2. Copy of road inventory</p>
                                     <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p>
                                     <select class="form-control" id="chooseData">
@@ -1544,7 +1562,8 @@
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body" style="text-align:center;">
-                                    <p style="font-weight:bold;text-align:center;">Options</p>
+                                    <!-- <p style="font-weight:bold;text-align:center;">Options</p> -->
+                                    <p style="font-weight:bold;text-align:center;color:red;">Note: This is an OPTIONAL Step for GIS Users</p>
                                     <p>Upload a zipped (.zip) shapefile for:</p>
                                     <p style="text-align:left;">1. Temporary display<br>2. Bulk Inventory Submission</p>
                                     <div style='padding-left:4px;'><!-- swamp thang -->
@@ -1590,14 +1609,37 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" id="collapseSixHdr" style="cursor: pointer;">
+                                <h4 class="panel-title">Map Tools</h4>
+                            </div>
+                            <div id="collapseSix" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p style="font-weight:bold;text-align:center;"></p>
+                                    <div id="dojoContent" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                                        <div id="borderDiv">
+                                            <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" style="width:100%; height:100%;">
+                                                <div id="titlePane" data-dojo-type="dijit/TitlePane" data-dojo-props="title:'Measure Tools', closable:false, open:true">
+                                                    <div id="measurementDiv"></div>
+                                                    <button type="button" class="btn btn-default btn-sm" id="clearMeasure"><span class="glyphicon glyphicon-remove"></span> Clear</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button id="basemapToggle" type="button" class="btn btn-default btn-block">View TxDOT Imagery</button>
+                                    <button id="googleLink" type="button" class="btn btn-default btn-block">Jump To Google &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span class="glyphicon glyphicon-share-alt"></span></button>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <button id="homeBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <button id="logoff" type="button" class="btn btn-default">Log Off</button>
-            <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
-            <button id="googleLink" type="button" class="btn btn-default">Jump To<br> Google <br>&nbsp</button>
+            <!-- <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
+            <button id="googleLink" type="button" class="btn btn-default">Jump To<br> Google <br>&nbsp</button> -->
             <span id="user"></span>
             <span id="info"></span>
             <!-- <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
