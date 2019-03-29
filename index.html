@@ -30,7 +30,13 @@
         .contentPane {
             max-height: 340px !important;
         }
-
+        #userCreds {
+            position: absolute;
+            width: 175px;
+            bottom: 3px;
+            right: 20px;
+            z-index: 50;
+        }
         #info {
             position: absolute;
             bottom: 1px;
@@ -40,11 +46,7 @@
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         }
         #logoff {
-            position: absolute;
-            bottom: 3px;
-            right: 5px;
-            z-index: 50;
-            padding: 0 6px 0 6px;
+            text-align: left;
             background: #14385c;
             color: white;
             font-size: 1.2em;
@@ -56,25 +58,21 @@
         }
         #basemapToggle,
         #googleLink {
-            /* position: absolute;
-            top: 150px;
-            right: 5px;
-            z-index: 50;*/
-            /* display: inline;
-            width: 160px; */
             padding: 10px;
             margin-top: 30px;
-            /* background: #14385c;
-            color: white; */
+
             font-size: 1.0em;
         }
         #user {
             position: absolute;
-            bottom: 30px;
+            bottom: 40px;
             right: 5px;
-            z-index: 50;
-            color: #303030;
-            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+            /* z-index: 50;
+            color: white;
+            font-size: 1.0em;
+            background: #14385c;
+            border-radius: 5px; */
+            /* text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; */
         }
         #basemapTrigger {
             position: absolute;
@@ -295,6 +293,18 @@
             display: none;
         }
 
+        #logoff > span.glyphicon.glyphicon-ok {
+            display: none;
+        }
+
+        #logoff:hover > span.glyphicon.glyphicon-ok {
+            color: white;
+            display: inline-block;
+        }
+        #logoff:hover {
+            background-color: grey;
+        }
+
     </style>
 
     <script data-dojo-config="async:true, aliases: [
@@ -385,7 +395,13 @@
                     var displayLayers = []
                     var uploadedLayers;
                     var featureLayerEvents = [];
+                    var editOperation;
+                    // var dsgn;
+                    // var numLn;
+                    // var strNm;
+                    // var srf;
                     var spm = true;
+                    var title;
                     var previousBasemap;
                     var d = new Date();
                     var m = d.getMonth() + 1;
@@ -546,15 +562,6 @@
                     }, dom.byId("measurementDiv"));
                     measurement.startup();
 
-                    // document.getElementById("clear").addEventListener("click",clearMeasure);
-                    //
-                    // function clearMeasure() {
-                    //     measurement.setTool("area", false);
-                    //     measurement.setTool("distance", false);
-                    //     measurement.setTool("location", false);
-                    //     measurement.clearResult();
-                    // }
-
                     ////SEARCH WIDGET
                     var search = new Search({
                         enableLabel: false,
@@ -607,6 +614,11 @@
                     map.on("click",function(){
                         search.clear();
                     });
+                    measurement.on("measure-start", function(evt){
+                        // disableEvents();
+                        map.infoWindow.hide();
+                      });
+
                     function showCoordinates(evt) {
                         var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
                         document.getElementById("info").innerHTML = "Level: " + map.getZoom() + ", " + mp.x.toFixed(6) + ", " + mp.y.toFixed(6);
@@ -894,8 +906,16 @@
                             autoAttributes = lang.mixin(blankAttributes, {
                                 "SOURCE": org,
                                 "LENGTH": rounder,
-                                "UPDATE_DT": t
+                                "UPDATE_DT": t,
+
                             });
+                            // Autopopulate REMOVE operation with default values
+                            if (autoAttributes.CHANGE == "Remove EXISTING Road") {
+                                autoAttributes.DESIGN = 2;
+                                autoAttributes.NUM_LANES = 2;
+                                autoAttributes.SURFACE = 10;
+                            }
+                            // console.log(autoAttributes);
                             var newGraphic = new Graphic(evt.geometry, null, autoAttributes);
                             selectedTemplate.featureLayer.applyEdits([newGraphic], null, null);
                             tpCustom.clearSelection();
@@ -918,17 +938,28 @@
                         selectQuery.geometry = queryExtent.centerAt(centerPoint);
                         refLayers[0].selectFeatures(selectQuery, FeatureLayer.SELECTION_NEW, function(features) {
                             if (features.length > 0) {
-                                // map.infoWindow.setTitle(features[0].getLayer().name);
+                                //Reset Edit Geometry Button
+                                dom.byId("dijit_form_Button_6").parentElement.style.display = "block";
+                                //Reset editable Fields
+
                                 map.infoWindow.setTitle("Inventory Changes");
+                                // Set edit operation type and editable features based on operation type
+                                editOperation = aiCustom.layerInfos[0].fieldInfos[2].dijit.displayedValue;
                                 map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-                                document.getElementById("dijit_form_Button_5").parentElement.style.display = "block";
+                                if (editOperation === "Update Attributes") {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                    dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
+                                }
+                                else {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                }
                             } else {
                                 refLayers[1].selectFeatures(selectQuery, FeatureLayer.SELECTION_NEW, function(features) {
                                     if (features.length > 0) {
-                                        // map.infoWindow.setTitle(features[0].getLayer().name);
                                         map.infoWindow.setTitle("Current Inventory");
                                         map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-                                        document.getElementById("dijit_form_Button_5").parentElement.style.display = "none";
+                                        dom.byId("dijit_form_Button_5").parentElement.style.display = "none";
+                                        dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
                                     } else {
                                         map.infoWindow.hide();
                                     }
@@ -941,6 +972,48 @@
                         aiCustom = new AttributeInspector({
                             layerInfos: editorInfos
                         }, domConstruct.create("div"));
+                        ////SAVE BUTTON
+                        var saveBtn = new dojoButton({
+                            label: "Confirm Edit"
+                        }, domConstruct.create("div"));
+                        domConstruct.place(saveBtn.domNode, aiCustom.deleteBtn.domNode, "after");
+                        // Verify all fields are complete based on edit operation type
+                        saveBtn.on("click", function(features) {
+                            var fieldList = [];
+                            var alertList = [];
+                            var strNm = {
+                                "name": "Full Street Name ",
+                                "value": aiCustom.layerInfos[0].fieldInfos[3].dijit.value
+                            };
+                            var dsgn = {
+                                "name": " Roadway Design ",
+                                "value": aiCustom.layerInfos[0].fieldInfos[4].dijit.value
+                            };
+                            var srf = {
+                                "name": " Surface Type ",
+                                "value": aiCustom.layerInfos[0].fieldInfos[5].dijit.value
+                            };
+                            var numLn = {
+                                "name": " Number of Lanes ",
+                                "value": aiCustom.layerInfos[0].fieldInfos[6].dijit.value
+                            };
+                            fieldList.push(strNm,dsgn,srf,numLn);
+                            // console.log(fieldList[0].value);
+                            for (var i=0; i<fieldList.length;i++) {
+                                if (fieldList[i].value === "") {
+                                    alertList.push(fieldList[i].name);
+                                }
+
+                            }
+                            if (alertList.length>0) {
+                                alert("Oops! \nThese fields are missing values: \n"+alertList);
+                            }
+                            else {
+                                map.infoWindow.hide();
+                            }
+
+                        });
+                        ////EDIT GEOMETRY BUTTON
                         var geomButton = new dojoButton({
                             label: "Edit Geometry"
                         }, domConstruct.create("div"));
@@ -967,6 +1040,17 @@
                             refLayers[1].clearSelection();
                         });
                     }
+                    // FUNCTIONS TO TOGGLE FIELDINFOS EDIT PROPERTY (UNABLE TO SET OUTSIDE OF A SELECTION)
+                    // function setFields() {
+                    //     aiCustom.layerInfos[0].fieldInfos[4].field.editable=false;
+                    //     aiCustom.layerInfos[0].fieldInfos[5].field.editable=false;
+                    //     aiCustom.layerInfos[0].fieldInfos[6].field.editable=false;
+                    // }
+                    // function resetFields() {
+                    //     aiCustom.layerInfos[0].fieldInfos[4].field.editable=true;
+                    //     aiCustom.layerInfos[0].fieldInfos[5].field.editable=true;
+                    //     aiCustom.layerInfos[0].fieldInfos[6].field.editable=true;
+                    // }
                     function buildEditToolbar() {
                         editToolbar = new Edit(map);
                         editToolbar.on("deactivate", function(evt) {
@@ -1394,7 +1478,9 @@
                             // check to see if selection matches AGO credentials
                             if (AGO_user === CNTY_user || AGO_user === "GIS") {
                                 presentData();
-                                $("#user").html($("#selectOrg option[value='" + org + "']").text());
+                                dom.byId("user").innerHTML = countyName;
+                                // $("#user").html.(AGO_user);
+                                // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                 console.log("Success!")
                             }
                             else {
@@ -1402,7 +1488,9 @@
                                 if (TXDOT_login) {
                                     var TXDOT_user = TXDOT_login[0];
                                     presentData();
-                                    $("#user").html($("#selectOrg option[value='" + org + "']").text());
+                                    dom.byId("user").innerHTML = countyName;
+                                    // $("#user").html.(AGO_user);
+                                    // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                     console.log("TXDOT Match!")
                                 }
                                 else {
@@ -1637,10 +1725,15 @@
             </div>
             <button id="homeBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
-            <button id="logoff" type="button" class="btn btn-default">Log Off</button>
+            <div id="userCreds">
+                <span id="user"></span>
+                <button id="logoff" type="button" class="btn btn-default btn-block">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-ok"></span></button>
+
+            </div>
+
             <!-- <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
             <button id="googleLink" type="button" class="btn btn-default">Jump To<br> Google <br>&nbsp</button> -->
-            <span id="user"></span>
+
             <span id="info"></span>
             <!-- <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <div id="basemapPanel">
