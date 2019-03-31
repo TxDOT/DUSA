@@ -208,13 +208,8 @@
             cursor: inherit;
             display: block;
         }
-        .btn-primary:hover {
+        #signInButton {
             background-color: green;
-            /* background-color: rgb(137, 155, 173); */
-        }
-        .btn-primary {
-            background-color: green !important;
-            /* background-color: rgb(20, 56, 92); */
         }
         span.dijit.dijitReset.dijitInline.dijitButton.atiButton.atiDeleteButton {
             margin: .2em;
@@ -293,16 +288,18 @@
             display: none;
         }
 
-        #logoff > span.glyphicon.glyphicon-ok {
+        #logoff > span.glyphicon.glyphicon-floppy-saved {
             display: none;
         }
-
-        #logoff:hover > span.glyphicon.glyphicon-ok {
+        #logoff:hover > span.glyphicon.glyphicon-floppy-disk {
+            display: none;
+        }
+        #logoff:hover > span.glyphicon.glyphicon-floppy-saved {
             color: white;
             display: inline-block;
         }
         #logoff:hover {
-            background-color: grey;
+            border-color: grey;
         }
 
     </style>
@@ -1329,6 +1326,9 @@
                         $("#clearDisplay").attr("style", "display:none;");
                     }
                     ////JQUERY EVENTS
+                    // $('#myModal').on('shown.bs.modal', function () {
+                    // $('#myInput').trigger('focus')
+                    // });
                     $("#needHelp").click(function() {
                         $("#popHelp").toggle("fast");
                     });
@@ -1727,7 +1727,7 @@
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <div id="userCreds">
                 <span id="user"></span>
-                <button id="logoff" type="button" class="btn btn-default btn-block">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-ok"></span></button>
+                <button id="logoff" type="button" class="btn btn-default btn-block">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-floppy-disk"></span><span class="glyphicon glyphicon-floppy-saved"></span></button>
 
             </div>
 
@@ -1740,6 +1740,30 @@
                 <div id="basemapContainer" class="container" style="width:100%;">
                     <div id="basemapGallery" class="row"></div>
                 </div>
+            </div> -->
+            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+              Launch demo modal
+            </button> -->
+
+            <!-- Modal -->
+            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    ...
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
             </div> -->
         </div>
 
