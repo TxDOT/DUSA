@@ -645,7 +645,7 @@
                             var theName = pieces[0];
                             var caps = theName.toUpperCase();
                             $("#resources").append(
-                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to use this Webmap'>Instructions</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a>"
+                                "<a>&bull; </a><a href='javascript:void(0)'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a><br><a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to use this Application'>Instructions</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a>"
                             );
                             // <br><a>&bull; </a><a href='ftp://ftp.dot.state.tx.us/pub/txdot-info/tpp/countyfiles/2016/" + caps + "_2016.zip' id='FTPlink' target='Download' title='Download CRI Zipfile Packet for Selected County'>Download Packet</a>"); -mw
                             var queryTask = new QueryTask(countiesURL);
@@ -1343,7 +1343,7 @@
                         $("#basemapPanel").slideToggle("fast");
                         $("#basemapArrow").toggleClass('glyphicon-chevron-up glyphicon-chevron-down');
                     });
-                    $('#logoff').click(function() {
+                    $('#exitApp').click(function() {
                         IdentityManager.destroyCredentials();
                         location.reload(true); // force reload on firefox
                         // window.history.back();
@@ -1727,7 +1727,7 @@
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <div id="userCreds">
                 <span id="user"></span>
-                <button id="logoff" type="button" class="btn btn-default btn-block">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-floppy-disk"></span><span class="glyphicon glyphicon-floppy-saved"></span></button>
+                <button id="logoff" type="button" class="btn btn-default btn-block" data-toggle="modal" data-target="#logoffModal">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-floppy-disk"></span><span class="glyphicon glyphicon-floppy-saved"></span></button>
 
             </div>
 
@@ -1741,31 +1741,61 @@
                     <div id="basemapGallery" class="row"></div>
                 </div>
             </div> -->
-            <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-              Launch demo modal
-            </button> -->
 
-            <!-- Modal -->
-            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <!-- Log Off Modal -->
+            <div class="modal fade" id="logoffModal" tabindex="-1" role="dialog" aria-labelledby="logoffModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h1 class="text-center" id="logoffModalLabel">Data Updates & Sharing Application</h1>
                   </div>
                   <div class="modal-body">
-                    ...
+                    Click "Save Changes" to Save and Log Out <br>
+                    Click "Cancel" to Return to Application
                   </div>
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="exitApp">Save and Log Out</button>
                   </div>
                 </div>
               </div>
-            </div> -->
+            </div>
         </div>
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="aboutModalLabel">About</h3>
+              </div>
+              <div class="modal-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolorem
+                tenetur numquam at aspernatur ex illum perferendis dolores voluptatibus, cum deserunt
+                saepe, placeat. Praesentium amet perspiciatis dignissimos nostrum eos fuga? <br>
+                    <h4>New Features <br> <br>
+                        <ul>Feature1</ul>
+                        <ul>Feature2</ul>
+                        <ul>Feature3</ul>
+                        <ul>Feature4</ul>
+                        <ul>Feature5</ul>
+                        <ul>Feature6</ul>
+                    </h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
 
     </body>
 </html>
