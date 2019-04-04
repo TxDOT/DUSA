@@ -398,6 +398,7 @@
                     // var strNm;
                     // var srf;
                     var spm = true;
+                    var editView = false;
                     var title;
                     var previousBasemap;
                     var d = new Date();
@@ -526,6 +527,14 @@
                         showLabels: true,
                         outFields: ["*"]
                     });
+                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA_dev/FeatureServer/0"; //2018 dev version
+                    var edits_2018 = new FeatureLayer(edits_2018URL, {
+                        id: "ED2018",
+                        mode: FeatureLayer.MODE_ONDEMAND,
+                        showLabels: false,
+                        outFields: ["*"]
+                    });
+
                     ////LS FEATURE LAYERS & EVENTS
                     var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0"; //swamp thang
                     var ls_maintenance = new FeatureLayer(ls_maintenanceURL, {
@@ -639,7 +648,9 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            map.addLayers([counties, countyroads, cr_updatesLyr]);
+                            edits_2018.setDefinitionExpression("SOURCE = '" + org + "'");
+                            map.addLayers([counties, countyroads, cr_updatesLyr, edits_2018]);
+                            map.removeLayer(edits_2018);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
@@ -653,6 +664,10 @@
                             query.returnGeometry = true;
                             queryTask.execute(query, findExtent);
                             legendInfos = [{
+                                layer: edits_2018,
+                                defaultSymbol: false,
+                                title: "2018 Edits"
+                            }, {
                                 layer: countyroads,
                                 defaultSymbol: false,
                                 title: "Surface Type"
@@ -662,7 +677,7 @@
                                 title: "Active County"
                             }];
                             templateLayers = [cr_updatesLyr];
-                            refLayers = [cr_updatesLyr, countyroads];
+                            refLayers = [cr_updatesLyr, countyroads, edits_2018];
                             serviceURL = cr_updatesURL;
                             editorInfos = [{
                                 'featureLayer': cr_updatesLyr,
@@ -724,6 +739,35 @@
                                 }, {
                                     'fieldName': "NUM_LANES",
                                     'label': "Number of Lanes"
+                                }]
+                            }, {
+                                'featureLayer': edits_2018,
+                                'showAttachments': false,
+                                'isEditable': false,
+                                'fieldInfos': [{
+                                    'fieldName': "CNTY_NBR",
+                                    'label': "County Number"
+                                }, {
+                                    'fieldName': "CNTY_NM",
+                                    'label': "County Name"
+                                }, {
+                                    'fieldName': "LENGTH",
+                                    'label': "Length (Miles)"
+                                }, {
+                                    'fieldName': "STREET_NM",
+                                    'label': "Full Street Name"
+                                }, {
+                                    'fieldName': "DESIGN",
+                                    'label': "Roadway Design"
+                                }, {
+                                    'fieldName': "SURFACE",
+                                    'label': "Surface Type"
+                                }, {
+                                    'fieldName': "NUM_LANES",
+                                    'label': "Number of Lanes"
+                                }, {
+                                    'fieldname': "COMMENT",
+                                    'label': "TxDOT Comments"
                                 }]
                             }];
                         } else if (updateClass == "LS") {
@@ -846,8 +890,10 @@
                         });
                         var select1 = refLayers[0].on("click", selectFeature);
                         var select2 = refLayers[1].on("click", selectFeature);
+                        var select3 = refLayers[2].on("click",selectFeature);
                         featureLayerEvents.push(select1);
                         featureLayerEvents.push(select2);
+                        featureLayerEvents.push(select3);
                         map.enableDoubleClickZoom();
                     }
                     function disableEvents() {
@@ -879,6 +925,7 @@
                         tpCustom.on("selection-change", function() {
                             refLayers[0].clearSelection();
                             refLayers[1].clearSelection();
+                            refLayers[2].clearSelection();
                             map.infoWindow.hide();
                             if (tpCustom.getSelected()) {
                                 selectedTemplate = tpCustom.getSelected();
@@ -926,6 +973,7 @@
                     function selectFeature(evt) {
                         refLayers[0].clearSelection();
                         refLayers[1].clearSelection();
+                        refLayers[2].clearSelection();
                         var centerPoint = new Point(evt.mapPoint.x, evt.mapPoint.y, evt.mapPoint.spatialReference);
                         var mapWidth = map.extent.getWidth();
                         var pixelWidth = mapWidth / map.width;
@@ -1326,9 +1374,20 @@
                         $("#clearDisplay").attr("style", "display:none;");
                     }
                     ////JQUERY EVENTS
-                    // $('#myModal').on('shown.bs.modal', function () {
-                    // $('#myInput').trigger('focus')
-                    // });
+
+                    // toggle edits option (comment to disable)
+                    $("#layerToggle").click(function() {
+                        if (!editView) {
+                            map.addLayer(edits_2018);
+                            $("#layerToggle").html("Hide 2018 Edits");
+                            editView = true;
+                        }
+                        else {
+                            editView = false;
+                            map.removeLayer(edits_2018);
+                            $("#layerToggle").html("View 2018 Edits");
+                        }
+                    });
                     $("#needHelp").click(function() {
                         $("#popHelp").toggle("fast");
                     });
@@ -1616,8 +1675,16 @@
                                     <!--<p>Edit the data stuff here. Template, edit tools, etc. Submits edit button which sends email?</p>-->
                                     <div id="editTemplate"></div>
                                     <br>
-                                    <div id="legend"></div>
                                     <a href="./resources/EditInstructions.pdf" target="EditInstructions" title="How to Edit"><button type="button" class="helpButton" id="editHelp">?</button></a>
+                                    <br>
+                                    <br>
+                                    <div id="legend"></div>
+                                    <!-- infobutton option -->
+                                    <!-- <button type="button" class="btn btn-default" id="editInfoBtn" data-toggle='modal' data-target='#editInfoModal'>?</button> -->
+                                    <button type="button" class="helpButton" id="editInfoBtn" data-toggle='modal' data-target='#editInfoModal'>?</button>
+                                    <!-- toggle layer option -->
+                                    <button type="button" class="btn btn-default" id="layerToggle">View 2018 Edits</button>
+
                                 </div>
                             </div>
                         </div>
@@ -1786,6 +1853,36 @@
                         <ul>Feature4</ul>
                         <ul>Feature5</ul>
                         <ul>Feature6</ul>
+                    </h4>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Info Modal -->
+        <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="editInfoModalLabel">2018 Edits Information</h3>
+              </div>
+              <div class="modal-body">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolorem
+                tenetur numquam at aspernatur ex illum perferendis dolores voluptatibus, cum deserunt
+                saepe, placeat. Praesentium amet perspiciatis dignissimos nostrum eos fuga? <br>
+                    <h4>Does Not Meet Criteria Possible Reasons <br> <br>
+                        <ul>Reason1</ul>
+                        <ul>Reason2</ul>
+                        <ul>Reason3</ul>
+                        <ul>Reason4</ul>
+                        <ul>Reason5</ul>
+                        <ul>Reason6</ul>
                     </h4>
               </div>
               <div class="modal-footer">
