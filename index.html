@@ -188,7 +188,7 @@
             background-color: #C2C4C5;
             border-color: #C2C4C5;
         }
-        .panel-heading.collapsed:hover {
+        .panel-heading.collapsed>:hover{
             color: rgb(20, 56, 92);
         }
         .btn-file {
@@ -1847,7 +1847,8 @@
                                         <option value="SHP" selected>Shapefile</option>  <option value="FGDB">File Geodatabase</option>
                                         <option value="CSV">Table</option>
                                     </select>
-                                    <button type="button" class="btn btn-default" id="download"><span class="glyphicon glyphicon-open"></span> Download!</button>
+                                    <br>
+                                    <button type="button" class="btn btn-default" id="download"><span class="glyphicon glyphicon-save"></span> Download!</button>
                                     <div id="downloadMarquee" style="text-align:left;"></div>
                                     <a href="./resources/DownloadInstructions.pdf" target="DownloadInstructions" title="How to Download"><button type="button" class="helpButton" id="downloadHelp">?</button></a>
                                 </div>
@@ -1870,6 +1871,7 @@
                                         <select class="form-control" id="chooseUpload">
                                             <option value="DISPLAY" selected>Temporary Display</option> <option value="UPLOAD">Bulk Submission</option>
                                         </select>
+                                        <br>
                                         <form class="form-group" enctype="multipart/form-data" method="post" id="uploadForm">
                                             <div class="form-group">
                                                 <span class="btn btn-default btn-file"><span class="glyphicon glyphicon-search"></span> Choose a File
