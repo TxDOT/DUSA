@@ -980,7 +980,7 @@
                                 setupSelection();
                             }
                         });
-                        drawToolbar.on("draw-end", function(evt) {
+                        drawToolbar.on("draw-complete", function(evt) {
                             drawToolbar.deactivate();
                             map.setMapCursor("default");
                             setupSelection();
@@ -993,18 +993,41 @@
                                 "SOURCE": org,
                                 "LENGTH": rounder,
                                 "UPDATE_DT": t,
-
                             });
+
                             // Autopopulate REMOVE operation with default values
                             if (autoAttributes.CHANGE == "Remove EXISTING Road") {
                                 autoAttributes.DESIGN = 2;
                                 autoAttributes.NUM_LANES = 2;
                                 autoAttributes.SURFACE = 10;
                             }
-                            // console.log(autoAttributes);
+
+                            // Show infoWindow when drawing is complete
                             var newGraphic = new Graphic(evt.geometry, null, autoAttributes);
-                            selectedTemplate.featureLayer.applyEdits([newGraphic], null, null);
+                            var scrnPt = new Point (newGraphic.geometry.paths[0][0][0],newGraphic.geometry.paths[0][0][1], newGraphic.geometry.spatialReference);
+                            // Wrap logic in callback function that waits for edits to post to AGO. This avoids empty infoWindow
+                            var newEdit = selectedTemplate.featureLayer.applyEdits([newGraphic], null, null, function(){
+                                //Reset Edit Geometry Button
+                                dom.byId("dijit_form_Button_6").parentElement.style.display = "block";
+                                map.infoWindow.setTitle("Inventory Changes");
+                                // Set edit operation type and editable features based on operation type
+                                var operation = autoAttributes.CHANGE;
+                                // Get Infowindow Title and disable close option for Inventory Updates
+                                var theTitle = map.infoWindow._title.innerHTML
+                                var titleButton = document.getElementsByClassName("titleButton");
+                                setTitleBtn(titleButton,theTitle);
+                                map.infoWindow.show(scrnPt, map.getInfoWindowAnchor(scrnPt));
+                                if (operation === "Update Attributes Only") {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                    dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
+                                }
+                                else {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                }
+                            });
                             tpCustom.clearSelection();
+
+
                         });
                         $('#collapseOne').removeClass('in');
                         $('#collapseOneHdr').addClass('collapsed');
