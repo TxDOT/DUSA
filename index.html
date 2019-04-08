@@ -685,7 +685,7 @@
                             var theName = pieces[0];
                             var caps = theName.toUpperCase();
                             $("#resources").append(
-                                "<a>&bull; </a><a href='javascript:void(0)'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a><br><a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to use this Application'>Instructions</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a>"
+                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='javascript:void(0)'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a>"
                             );
                             // <br><a>&bull; </a><a href='ftp://ftp.dot.state.tx.us/pub/txdot-info/tpp/countyfiles/2016/" + caps + "_2016.zip' id='FTPlink' target='Download' title='Download CRI Zipfile Packet for Selected County'>Download Packet</a>"); -mw
                             var queryTask = new QueryTask(countiesURL);
@@ -699,7 +699,7 @@
                             }, {
                                 layer: edits_2018,
                                 defaultSymbol: false,
-                                title: "2018 Edits"
+                                title: "2018 Markup"
                             },
                             {
                                 layer: counties,
@@ -1479,14 +1479,14 @@
                         if (!editView) {
                             // map.addLayer(edits_2018);
                             edits_2018.show();
-                            $("#layerToggle").html("Hide 2018 Edits");
+                            $("#layerToggle").html("Hide 2018 Markup");
                             editView = true;
                         }
                         else {
                             editView = false;
                             // map.removeLayer(edits_2018);
                             edits_2018.hide();
-                            $("#layerToggle").html("View 2018 Edits");
+                            $("#layerToggle").html("View 2018 Markup");
                         }
                     });
                     $("#needHelp").click(function() {
@@ -1796,7 +1796,7 @@
                                     </a>
                                     <br>
                                     <div>
-                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Edits">View 2018 Edits</button>
+                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Markup">View 2018 Markup</button>
                                         <button type="button" class="btn btn-default" id="editInfoBtn" title="About County Road Criteria" data-toggle='modal' data-target='#editInfoModal'>
                                             <span class="glyphicon glyphicon-question-sign">
                                             </span>
@@ -1968,17 +1968,24 @@
                   <h3 class="modal-title" id="aboutModalLabel">About</h3>
               </div>
               <div class="modal-body">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolorem
-                tenetur numquam at aspernatur ex illum perferendis dolores voluptatibus, cum deserunt
-                saepe, placeat. Praesentium amet perspiciatis dignissimos nostrum eos fuga? <br>
-                    <h4>New Features <br> <br>
+                  A few things to note about DUSA for 2019:
+  1)	On March 21, 2019, the valid updates submitted from 2018 were applied to the county road base layer.
+  2)	Several key enhancements were made to the DUSA application in response to feedback from the counties, including the following:
+  a.	A measure tool was added to help measure the distance along roads;
+  b.	The editing pop-up has been improved for clearer markups;
+  c.	Minor changes to the layout of the menu/tools were made to allow for more efficient editing;
+  d.	Save/submit buttons have been added to clarify when your edits have been saved; and
+  e.	A new ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the criteria for a county road, or were not updated for another reason*.
+  * Note: several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates. Until we are able to update a city boundary, we cannot update the affected county roads and city streets.  We apologize for the delay.
+ <br>
+                    <!-- <h4>New Features <br> <br>
                         <ul>Feature1</ul>
                         <ul>Feature2</ul>
                         <ul>Feature3</ul>
                         <ul>Feature4</ul>
                         <ul>Feature5</ul>
                         <ul>Feature6</ul>
-                    </h4>
+                    </h4> -->
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
@@ -1995,7 +2002,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="editInfoModalLabel">2018 Edits Information</h3>
+                  <h3 class="modal-title" id="editInfoModalLabel">2018 Markup Information</h3>
               </div>
               <div class="modal-body">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolorem
