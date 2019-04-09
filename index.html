@@ -348,7 +348,7 @@
             ['bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js']
             ]" src="https://js.arcgis.com/3.24/">
     </script>
-    <!-- swamp thang -->
+
 
     <script>
         require([
@@ -1109,34 +1109,8 @@
                         domConstruct.place(saveBtn.domNode, aiCustom.deleteBtn.domNode, "after");
                         // Verify all fields are complete based on edit operation type
                         saveBtn.on("click", function(features) {
-                            var fieldList = [];
-                            var alertList = [];
-                            var strNm = {
-                                "name": "Full Street Name ",
-                                "value": aiCustom.layerInfos[0].fieldInfos[3].dijit.value
-                            };
-                            var dsgn = {
-                                "name": " Roadway Design ",
-                                "value": aiCustom.layerInfos[0].fieldInfos[4].dijit.value
-                            };
-                            var srf = {
-                                "name": " Surface Type ",
-                                "value": aiCustom.layerInfos[0].fieldInfos[5].dijit.value
-                            };
-                            var numLn = {
-                                "name": " Number of Lanes ",
-                                "value": aiCustom.layerInfos[0].fieldInfos[6].dijit.value
-                            };
-                            fieldList.push(strNm,dsgn,srf,numLn);
-                            // console.log(fieldList[0].value);
-                            for (var i=0; i<fieldList.length;i++) {
-                                if (fieldList[i].value === "") {
-                                    alertList.push(fieldList[i].name);
-                                }
-
-                            }
+                            var alertList = getAlertList();
                             if (alertList.length>0) {
-                                // Alert using Sweet Alert library
                                 swal({
                                     title: "Oops!",
                                     text: "The following fields are blank and require a value: \n\n"+alertList,
@@ -1161,10 +1135,23 @@
                         }, domConstruct.create("div"));
                         domConstruct.place(geomButton.domNode, aiCustom.deleteBtn.domNode, "after");
                         geomButton.on("click", function() {
-                            var features = refLayers[0].getSelectedFeatures();
-                            var feature = features[0];
-                            map.infoWindow.hide();
-                            activateToolbar(feature);
+                            var alertList = getAlertList();
+                            if (alertList.length>0) {
+                                // Alert using Sweet Alert library
+                                swal({
+                                    title: "Oops!",
+                                    text: "The following fields are blank and require a value: \n\n"+alertList,
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                });
+                            }
+                            else {
+                                var features = refLayers[0].getSelectedFeatures();
+                                var feature = features[0];
+                                map.infoWindow.hide();
+                                activateToolbar(feature);
+                            }
+
                         });
                         aiCustom.on("attribute-change", function(evt) {
                             evt.feature.attributes[evt.fieldName] = evt.fieldValue;
@@ -1182,17 +1169,36 @@
                             refLayers[1].clearSelection();
                         });
                     }
-                    // FUNCTIONS TO TOGGLE FIELDINFOS EDIT PROPERTY (UNABLE TO SET OUTSIDE OF A SELECTION)
-                    // function setFields() {
-                    //     aiCustom.layerInfos[0].fieldInfos[4].field.editable=false;
-                    //     aiCustom.layerInfos[0].fieldInfos[5].field.editable=false;
-                    //     aiCustom.layerInfos[0].fieldInfos[6].field.editable=false;
-                    // }
-                    // function resetFields() {
-                    //     aiCustom.layerInfos[0].fieldInfos[4].field.editable=true;
-                    //     aiCustom.layerInfos[0].fieldInfos[5].field.editable=true;
-                    //     aiCustom.layerInfos[0].fieldInfos[6].field.editable=true;
-                    // }
+
+                    function getAlertList() {
+                        var fieldList = [];
+                        var alertList = [];
+                        var strNm = {
+                            "name": "Full Street Name ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[3].dijit.value
+                        };
+                        var dsgn = {
+                            "name": " Roadway Design ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[4].dijit.value
+                        };
+                        var srf = {
+                            "name": " Surface Type ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[5].dijit.value
+                        };
+                        var numLn = {
+                            "name": " Number of Lanes ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[6].dijit.value
+                        };
+                        fieldList.push(strNm,dsgn,srf,numLn);
+                        // console.log(fieldList[0].value);
+                        for (var i=0; i<fieldList.length;i++) {
+                            if (fieldList[i].value === "") {
+                                alertList.push(fieldList[i].name);
+                            }
+
+                        }
+                        return alertList;
+                    }
 
                     function buildEditToolbar() {
                         editToolbar = new Edit(map);
@@ -1797,7 +1803,7 @@
                                     <br>
                                     <div>
                                         <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Markup">View 2018 Markup</button>
-                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About County Road Criteria" data-toggle='modal' data-target='#editInfoModal'>
+                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2018 Markup" data-toggle='modal' data-target='#editInfoModal'>
                                             <span class="glyphicon glyphicon-question-sign">
                                             </span>
                                         </button>
@@ -1846,7 +1852,7 @@
                                         </div>
                                     </div>
                                     <button id="basemapToggle" type="button" class="btn btn-default btn-block" title="Toggle Basemap">View TxDOT Imagery</button>
-                                    <button id="googleLink" type="button" class="btn btn-default btn-block" title="Launch Google Maps">Jump To Google<span class="glyphicon glyphicon-share-alt" style="float: right;"></span></button>
+                                    <button id="googleLink" type="button" class="btn btn-default btn-block" title="Launch Google Maps">Jump To Google &nbsp&nbsp<span class="glyphicon glyphicon-share-alt" style="float: right;"></span></button>
 
                                 </div>
                             </div>
@@ -1899,7 +1905,7 @@
                                     </a><br><br>
                                     <p>Upload a zipped (.zip) shapefile for:</p>
                                     <p style="text-align:left;">1. Temporary display<br>2. Bulk Inventory Submission</p>
-                                    <div style='padding-left:4px;'><!-- swamp thang -->
+                                    <div style='padding-left:4px;'>
                                         <p style="font-size: xx-small;">Help with <a target='_blank' style="color:blue;" href="https://doc.arcgis.com/en/arcgis-online/reference/shapefiles.htm">Shapefiles</a></p>
                                         <select class="form-control" id="chooseUpload">
                                             <option value="DISPLAY" selected>Temporary Display</option> <option value="UPLOAD">Bulk Submission</option>
