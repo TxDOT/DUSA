@@ -1146,7 +1146,7 @@
                                 });
                             }
                             else {
-                                var features = refLayers[0].getSelectedFeatures();
+                                var features = refLayers[0].getSelectedFeatures();//issue is this function call (no features are selected yet)
                                 var feature = features[0];
                                 map.infoWindow.hide();
                                 activateToolbar(feature);
@@ -1190,12 +1190,10 @@
                             "value": aiCustom.layerInfos[0].fieldInfos[6].dijit.value
                         };
                         fieldList.push(strNm,dsgn,srf,numLn);
-                        // console.log(fieldList[0].value);
                         for (var i=0; i<fieldList.length;i++) {
                             if (fieldList[i].value === "") {
                                 alertList.push(fieldList[i].name);
                             }
-
                         }
                         return alertList;
                     }
@@ -1227,7 +1225,19 @@
                             allowDeleteVertices: true,
                             ghostLineSymbol: ghostLine
                         };
-                        editToolbar.activate(Edit.EDIT_VERTICES, graphic, options);
+                        if (graphic==undefined) {
+                            swal({
+                                text: "Please Re-Select Line to Edit Geometry",
+                                icon: "info",
+                                buttons: false,
+                                timer: 1500,
+                                closeOnClickOutside: true,
+                            });
+                        }
+                        else {
+                            editToolbar.activate(Edit.EDIT_VERTICES, graphic, options);
+                        }
+
                     }
 
                     ////DOWNLOAD FUNCTIONS
