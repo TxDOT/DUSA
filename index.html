@@ -161,7 +161,7 @@
             width: 340px;
         }
         #menuPanel {
-            position: absolute;
+            position: relative;
             display: none;
             padding: 5px;
             margin: 5px;
@@ -262,8 +262,9 @@
             -ms-filter: "FlipH";
         }
         .templatePicker {
+            font-size: .95em;
             /* border: none !important; */
-            padding-left: 10px !important;
+            padding-left: 7px !important;
             /* -o-border-radius: 4px;
             -moz-border-radius: 4px;
             -webkit-border-radius: 4px;
@@ -337,6 +338,25 @@
         } */
         #editInfoBtn {
             width: auto;
+        }
+        #resources{
+    	    font-size: 1.4em;
+        }
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 1.5em;
+            text-align: center;
+            color: inherit;
+        }
+        .dojoxGridMasterView {
+            position: relative;
+        }
+        .dojoxGridScrollbox {
+            position: relative;
+            overflow: auto;
+            background-color: white;
+            width: 100%;
         }
 
     </style>
@@ -955,8 +975,8 @@
                         var tpCustom = new TemplatePicker({
                             featureLayers: templateLayers,
                             grouping: false,
-                            columns: 2,
-                            rows: 2,
+                            columns: 4,
+                            // rows: 2,
                             // showTooltip: true,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
@@ -2046,7 +2066,7 @@
               </div>
               <div class="modal-body">
                 <h4>About 2018 Markups that did not meet criteria</h4>
-                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the criteria for a county road,
+                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the <a href='/resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
                         or were not updated for another reason. Possible reasons include: </p><br>
                         <ul>
                             <li><strong>City Limit Interaction</strong>
