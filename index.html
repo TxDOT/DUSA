@@ -4,13 +4,11 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Data Updates & Sharing Application</title> <!-- DUSA v5.2.0 -->
-
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Data Updates & Sharing Application</title> <!-- DUSA v5.3.0 -->
     <link rel="stylesheet" href="https://js.arcgis.com/3.24/dijit/themes/tundra/tundra.css">
-    <!-- swamp thang -->
     <link rel="stylesheet" href="https://js.arcgis.com/3.24/esri/css/esri.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"crossorigin="anonymous">
     <link rel="apple-touch-icon" sizes="180x180" href="./resources/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./resources/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./resources/favicon-16x16.png">
@@ -30,32 +28,49 @@
         .contentPane {
             max-height: 340px !important;
         }
-
+        #userCreds {
+            position: absolute;
+            width: 175px;
+            bottom: 3px;
+            right: 20px;
+            z-index: 50;
+        }
         #info {
             position: absolute;
             bottom: 1px;
-            right: 20px;
+            left: 20px;
             z-index: 50;
             color: #303030;
             text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
         }
         #logoff {
-            position: absolute;
-            top: 3px;
-            right: 5px;
-            z-index: 50;
-            padding: 0 6px 0 6px;
+            text-align: left;
             background: #14385c;
             color: white;
             font-size: 1.2em;
         }
+        #mapOptions {
+            padding-top: 30px;
+            display: inline-block;
+            width: 200px;
+        }
+        #basemapToggle,
+        #googleLink {
+            padding: 10px;
+            margin-top: 30px;
+
+            font-size: 1.0em;
+        }
         #user {
             position: absolute;
-            bottom: 18px;
-            right: 20px;
-            z-index: 50;
-            color: #303030;
-            text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;
+            bottom: 40px;
+            right: 5px;
+            /* z-index: 50;
+            color: white;
+            font-size: 1.0em;
+            background: #14385c;
+            border-radius: 5px; */
+            /* text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; */
         }
         #basemapTrigger {
             position: absolute;
@@ -113,9 +128,9 @@
         #homeBtn {
             position: absolute;
             top: 90px;
-            left: 20px;
+            right: 20px;
             width: 33px;
-            z-index: 50;
+            z-index: 1;
             padding-left: 3px;
             padding-right: 3px;
             padding-top: 6px;
@@ -124,7 +139,8 @@
             /*border-color: black;*/
         }
         #menuBtn {
-            position: absolute;
+            display: none;
+            /* position: absolute;
             top: 130px;
             left: 20px;
             width: 33px;
@@ -133,12 +149,11 @@
             padding-right: 3px;
             padding-top: 6px;
             padding-bottom: 4px;
-            margin: 0;
-            /*border-color: black;*/
+            margin: 0; */
         }
         #menuContainer {
             position: absolute;
-            top: 160px;
+            top: 30px;
             left: 15px;
             z-index: 50;
             padding: 0;
@@ -146,7 +161,7 @@
             width: 340px;
         }
         #menuPanel {
-            position: absolute;
+            position: relative;
             display: none;
             padding: 5px;
             margin: 5px;
@@ -173,6 +188,9 @@
             background-color: #C2C4C5;
             border-color: #C2C4C5;
         }
+        .panel-heading.collapsed>:hover{
+            color: rgb(20, 56, 92);
+        }
         .btn-file {
             position: relative;
             overflow: hidden;
@@ -191,13 +209,8 @@
             cursor: inherit;
             display: block;
         }
-        .btn-primary:hover {
+        #signInButton {
             background-color: green;
-            /* background-color: rgb(137, 155, 173); */
-        }
-        .btn-primary {
-            background-color: green !important;
-            /* background-color: rgb(20, 56, 92); */
         }
         span.dijit.dijitReset.dijitInline.dijitButton.atiButton.atiDeleteButton {
             margin: .2em;
@@ -240,7 +253,114 @@
                 transform: scale(1) rotate(360deg);
             }
         }
+        #glyphTools {
+            -moz-transform: scaleX(-1);
+            -o-transform: scaleX(-1);
+            -webkit-transform: scaleX(-1);
+            transform: scaleX(-1);
+            filter: FlipH;
+            -ms-filter: "FlipH";
+        }
+        .templatePicker {
+            font-size: .95em;
+            /* border: none !important; */
+            padding-left: 7px !important;
+            /* -o-border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+            border-radius: 4px; */
+            /* width: 155px; */
+        }
+        /* .templatePicker .grid .dojoxGridCell {
+            border: 1px solid #337ab7;
+            border-color: #337ab7; */
+            /* border-radius: 10px !important; */
+            /* outline: none; */
+        /* }
+        .templatePicker .grid .dojoxGridCellFocus {
+            border: 1px solid #337ab7 !important;
+        } */
+        .esriSimpleSliderTL {
+            top: 20px !important;
+            right: 20px !important;
+            left: auto;
+        }
+        #dijit_layout_ContentPane_1 {
+            width: 251px;
+        }
+        #borderDiv {
+            position:relative;
+            z-Index:999;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+        #titlePane_titleBarNode > div > span.dijitInline.dijitArrowNode {
+            display: none;
+        }
+        #titlePane_titleBarNode {
+            background: #fff;
+            text-align:center;
+            height: 40px;
+            /* width: 163px; */
+            padding-top: 7px;
+            font-size: 1.1em;
+        }
+        #titlePane_titleBarNode:hover {
+            background: #e6e6e6;
+        }
+        #logoff > span.glyphicon.glyphicon-floppy-saved {
+            display: none;
+        }
+        #logoff:hover > span.glyphicon.glyphicon-floppy-disk {
+            display: none;
+        }
+        #logoff:hover > span.glyphicon.glyphicon-floppy-saved {
+            color: white;
+            display: inline-block;
+        }
+        #logoff:hover {
+            border-color: grey;
+        }
+
+        .swal-button {
+            background-color: #b3b3b3;
+        }
+        .swal-button:not([disabled]):hover {
+            background-color: #a6a6a6;
+        }
+        #legend {
+            border: 1px solid #7EABCD;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        /* #legend_msg {
+            display: none;
+        } */
+        #editInfoBtn {
+            width: auto;
+        }
+        #resources{
+    	    font-size: 1.4em;
+        }
+        .panel-title {
+            margin-top: 0;
+            margin-bottom: 0;
+            font-size: 1.5em;
+            text-align: center;
+            color: inherit;
+        }
+        .dojoxGridMasterView {
+            position: relative;
+        }
+        .dojoxGridScrollbox {
+            position: relative;
+            overflow: auto;
+            background-color: white;
+            width: 100%;
+        }
+
     </style>
+    <script src="js\sweetalert.min.js"></script>
 
     <script data-dojo-config="async:true, aliases: [
             ['jquery', 'https://code.jquery.com/jquery-2.1.4.min.js'],
@@ -248,7 +368,7 @@
             ['bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js']
             ]" src="https://js.arcgis.com/3.24/">
     </script>
-    <!-- swamp thang -->
+
 
     <script>
         require([
@@ -263,7 +383,8 @@
                 "esri/geometry/Point",
                 "esri/dijit/BasemapLayer",
                 "esri/layers/VectorTileLayer",
-                //"esri/layers/ArcGISTiledMapServiceLayer",
+                "esri/layers/WMTSLayer",
+                "esri/layers/WMTSLayerInfo",
                 "esri/config",
                 "esri/request",
                 "esri/geometry/scaleUtils",
@@ -277,11 +398,13 @@
                 "esri/graphic",
                 "esri/layers/FeatureLayer",
                 "esri/dijit/Search",
+                "esri/dijit/Scalebar",
                 "esri/dijit/Basemap",
                 "esri/dijit/BasemapGallery",
                 "esri/tasks/GeometryService",
                 "esri/units",
                 "esri/dijit/Legend",
+                "esri/dijit/Measurement",
                 "esri/dijit/editing/TemplatePicker",
                 "esri/dijit/AttributeInspector",
                 "esri/InfoTemplate",
@@ -302,13 +425,17 @@
                 "dojo/dom-construct",
                 "dojo/dom-style",
                 "dijit/form/Button",
-                "dojo/domReady!"
+                "dojo/domReady!",
+                "dijit/layout/BorderContainer",
+                "dijit/layout/ContentPane",
+                "dijit/TitlePane",
+                "dijit/form/CheckBox"
             ],
             function($, $ui,
-                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, /*Tiled,*/
+                Map, Graphic, Geomtery, Edit, Draw, Extent, Point, BasemapLayer, VectorTileLayer, WMTSLayer, WMTSLayerInfo,
                 esriConfig, request, scaleUtils, webMercatorUtils, geodesicUtils, config, Query, QueryTask,
-                Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Basemap, BasemapGallery, GeometryService, Units,
-                Legend, TemplatePicker, AttributeInspector, InfoTemplate,
+                Geoprocessor, GraphicsLayer, Graphic,FeatureLayer, Search, Scalebar, Basemap, BasemapGallery, GeometryService, Units,
+                Legend, Measurement, TemplatePicker, AttributeInspector, InfoTemplate,
                 SimpleRenderer, SimpleFillSymbol, SimpleLineSymbol, Color, OAuthInfo, IdentityManager,
                 ready, parser, require, sniff, dom, on, array, lang, domConstruct, domStyle, dojoButton) {
                 ready(function() {
@@ -323,6 +450,10 @@
                     var displayLayers = []
                     var uploadedLayers;
                     var featureLayerEvents = [];
+                    var editOperation;
+                    var spm = true;
+                    var editView = false;
+                    var title;
                     var previousBasemap;
                     var d = new Date();
                     var m = d.getMonth() + 1;
@@ -335,77 +466,91 @@
                     var geomServ = new GeometryService("https://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); //mw
                     var map = new Map("divMap", {
                         center: [-100, 32],
-                        zoom: 6, //zoom: 7, -mw
+                        zoom: 6,
+                        minZoom: 6,
+                        maxZoom: 20,
                         logo: false,
                         showLabels: true
                     });
-                    //tiled = new Tiled("http://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/Statewide_Planning_Map/MapServer");
-                    //map.addLayer(tiled); -mw
-                    //TxDOT Vector Tile Basemap -mw
 
-                    // URL for edited JSON style file
-                    // var vectorStyle = "https://txdot.maps.arcgis.com/sharing/rest/content/items/518ad28e9fd44c57a8248514d159d7bb/resources/styles/root.json"
-                    TxDOTVectorTileLayer = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
+                // Name server with CORS enabled for Google Imagery
+        			esri.config.defaults.io.corsEnabledServers.push ("https://txgi.tnris.org");
 
-                    // setting style for initial basemap
-                    // TxDOTVectorTileLayer.setStyle(vectorStyle);
-                    map.addLayer(TxDOTVectorTileLayer);
+        		// Google Imagery WMTS layer info
+        	        var GoogleLayerInfo = new WMTSLayerInfo({
+            	        identifier: "texas",
+            	        tileMatrixSet: "0to20",
+            	        format: "png"
+        	        });
 
+        	        var GoogleLayerOptions = {
+        	            serviceMode: "KVP",
+        	            layerInfo: GoogleLayerInfo,
+                        visible: false
+        	        };
 
+        			// Add Google Imagery WMTS layer
+        	        var google = new WMTSLayer("https://txgi.tnris.org/login/path/pegasus-horizon-castro-comrade/wmts", GoogleLayerOptions);
+        	        google.id = "googleLayer";
 
-                    var base_maps = [];
-                    base_maps.push(new Basemap({
-                        id: "spm",
-                        title: "TxDOT Planning Map",
-                        thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/87a5fd8e8ff84e969b0265ec5c326993/info/thumbnail/StatewidePlanningMap.png",
-                        layers: [new BasemapLayer({
-                            // setting style for basemap in BasemapGallery
-                            // styleUrl: vectorStyle,
-                            styleUrl: "https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer",
-                            type: "VectorTileLayer",
-                        })]
-                    }));
-                    base_maps.push(new Basemap({
-                        id: "imagery",
-                        title: "Texas Google Imagery",
-                        thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/tempimagery.jpg",
-                        layers: [new BasemapLayer({
-                            url: "https://txgi.tnris.org/login/path/pegasus-horizon-castro-comrade/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=texas&STYLE=default&FORMAT=image/png&TILEMATRIXSET=0to20&TILEMATRIX={level}&TILEROW={row}&TILECOL={col}",
-                            type: "WebTiledLayer"
-                        })]
-                    }));
-                    base_maps.push(new Basemap({
-                        id: "topo",
-                        title: "Topographic",
-                        thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/d5e02a0c1f2b4ec399823fdd3c2fdebd/info/thumbnail/topo_map_2.jpg",
-                        layers: [new BasemapLayer({
-                            url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
-                        })]
-                    }));
-                    base_maps.push(new Basemap({
-                        id: "street",
-                        title: "Open Street Map",
-                        thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/b834a68d7a484c5fb473d4ba90d35e71/info/thumbnail/osm.jpg",
-                        layers: [new BasemapLayer({
-                            url: "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer"
-                        })]
-                    }));
-                    var basemapGallery = new BasemapGallery({
-                        showArcGISBasemaps: false,
-                        basemaps: base_maps,
-                        map: map
-                    });
-                    $.each(basemapGallery.basemaps, function(bm, value) {
-                        var image = value.thumbnailUrl;
-                        var label = value.title;
-                        var id = value.id;
-                        $("#basemapGallery").append("<div class='col-md-3 basemapItem' id='" + id + "'><img class='basemapImg' id='" + id + "' src='" + image + "'><p id='" + id +
-                            "' style='color:white;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;'>" + label + "</p></div>");
-                    });
-                    $(".col-md-3.basemapItem").click(function(event) {
-                        var choice = event.target.id;
-                        basemapGallery.select(choice);
-                    });
+                    // Add TxDOT Planning Vector Tile Layer
+                    var TxDOTVectorTileLayer = new VectorTileLayer("https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer");
+
+                    map.addLayers([google,TxDOTVectorTileLayer]);
+
+                    // var base_maps = [];
+                    // base_maps.push(new Basemap({
+                    //     id: "spm",
+                    //     title: "TxDOT Planning Map",
+                    //     thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/87a5fd8e8ff84e969b0265ec5c326993/info/thumbnail/StatewidePlanningMap.png",
+                    //     layers: [new BasemapLayer({
+                    //         // setting style for basemap in BasemapGallery
+                    //         // styleUrl: vectorStyle,
+                    //         styleUrl: "https://tiles.arcgis.com/tiles/KTcxiTD9dsQw4r7Z/arcgis/rest/services/TxDOT_Vector_Tile_Basemap/VectorTileServer",
+                    //         type: "VectorTileLayer",
+                    //     })]
+                    // }));
+                    // base_maps.push(new Basemap({
+                    //     id: "imagery",
+                    //     title: "Texas Google Imagery",
+                    //     thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/86de95d4e0244cba80f0fa2c9403a7b2/info/thumbnail/tempimagery.jpg",
+                    //     layers: [new BasemapLayer({
+                    //         url: "https://txgi.tnris.org/login/path/pegasus-horizon-castro-comrade/wmts?SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&LAYER=texas&STYLE=default&FORMAT=image/png&TILEMATRIXSET=0to20&TILEMATRIX={level}&TILEROW={row}&TILECOL={col}",
+                    //         type: "WebTiledLayer"
+                    //     })]
+                    // }));
+                    // base_maps.push(new Basemap({
+                    //     id: "topo",
+                    //     title: "Topographic",
+                    //     thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/d5e02a0c1f2b4ec399823fdd3c2fdebd/info/thumbnail/topo_map_2.jpg",
+                    //     layers: [new BasemapLayer({
+                    //         url: "https://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer"
+                    //     })]
+                    // }));
+                    // base_maps.push(new Basemap({
+                    //     id: "street",
+                    //     title: "Open Street Map",
+                    //     thumbnailUrl: "https://www.arcgis.com/sharing/rest/content/items/b834a68d7a484c5fb473d4ba90d35e71/info/thumbnail/osm.jpg",
+                    //     layers: [new BasemapLayer({
+                    //         url: "https://services.arcgisonline.com/arcgis/rest/services/World_Street_Map/MapServer"
+                    //     })]
+                    // }));
+                    // var basemapGallery = new BasemapGallery({
+                    //     showArcGISBasemaps: false,
+                    //     basemaps: base_maps,
+                    //     map: map
+                    // });
+                    // $.each(basemapGallery.basemaps, function(bm, value) {
+                    //     var image = value.thumbnailUrl;
+                    //     var label = value.title;
+                    //     var id = value.id;
+                    //     $("#basemapGallery").append("<div class='col-md-3 basemapItem' id='" + id + "'><img class='basemapImg' id='" + id + "' src='" + image + "'><p id='" + id +
+                    //         "' style='color:white;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;'>" + label + "</p></div>");
+                    // });
+                    // $(".col-md-3.basemapItem").click(function(event) {
+                    //     var choice = event.target.id;
+                    //     basemapGallery.select(choice);
+                    // });
 
                     ////CRI FEATURE LAYERS & EVENTS
                     var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0"; //swamp thang
@@ -415,20 +560,31 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0";
+                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
                     // var crURL = "http://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads/FeatureServer/0";//swamp thang
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0";
+                    // var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //2017 version
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //2018 dev version
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
-                        showLabels: true,
+                        showLabels: false,
                         outFields: ["*"]
                     });
+                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA_dev/FeatureServer/0"; //2018 dev version
+                    var edits_2018 = new FeatureLayer(edits_2018URL, {
+                        id: "ED2018",
+                        mode: FeatureLayer.MODE_ONDEMAND,
+                        showLabels: false,
+                        visible: false,
+                        outFields: ["*"]
+                    });
+
                     ////LS FEATURE LAYERS & EVENTS
                     var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0"; //swamp thang
                     var ls_maintenance = new FeatureLayer(ls_maintenanceURL, {
@@ -450,6 +606,17 @@
                         showLabels: true,
                         outFields: ["*"]
                     });
+
+                    ////SCALEBAR
+                    var scalebar = new Scalebar({
+                        map: map,
+                      });
+
+                    ////MEASURE TOOL
+                    var measurement = new Measurement({
+                        map: map
+                    }, dom.byId("measurementDiv"));
+                    measurement.startup();
 
                     ////SEARCH WIDGET
                     var search = new Search({
@@ -488,21 +655,25 @@
                         var coords = ", " + current.split(",")[1] + ", " + current.split(",")[2];
                         $("#info").html("Level: " + map.getZoom() + coords);
                         var lvl = map.getZoom();
-                        var currentBasemap = basemapGallery.getSelected();
-                        if ((currentBasemap == null || currentBasemap.id == "spm") && lvl > 16) {
-                            basemapGallery.select("imagery");
-                            previousBasemap = "spm";
-                        } else if ((currentBasemap == null || currentBasemap.id == "imagery") && previousBasemap == "spm" && lvl < 17) {
-                            basemapGallery.select("spm");
-                            previousBasemap = "";
-                        } else if (previousBasemap != "spm") {
-                            previousBasemap = "";
-                        }
+                        // var currentBasemap = basemapGallery.getSelected();
+                        // if ((currentBasemap == null || currentBasemap.id == "spm") && lvl > 16) {
+                        //     basemapGallery.select("imagery");
+                        //     previousBasemap = "spm";
+                        // } else if ((currentBasemap == null || currentBasemap.id == "imagery") && previousBasemap == "spm" && lvl < 17) {
+                        //     basemapGallery.select("spm");
+                        //     previousBasemap = "";
+                        // } else if (previousBasemap != "spm") {
+                        //     previousBasemap = "";
+                        // }
                     });
-                    // need to nest in select function
                     map.on("click",function(){
                         search.clear();
                     });
+                    measurement.on("measure-start", function(evt){
+                        // disableEvents();
+                        map.infoWindow.hide();
+                      });
+
                     function showCoordinates(evt) {
                         var mp = webMercatorUtils.webMercatorToGeographic(evt.mapPoint);
                         document.getElementById("info").innerHTML = "Level: " + map.getZoom() + ", " + mp.x.toFixed(6) + ", " + mp.y.toFixed(6);
@@ -526,13 +697,15 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            map.addLayers([counties, countyroads, cr_updatesLyr]);
+                            edits_2018.setDefinitionExpression("SOURCE = '" + org + "'");
+                            map.addLayers([counties, edits_2018, countyroads, cr_updatesLyr]);
+                            // map.removeLayer(edits_2018);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
                             var caps = theName.toUpperCase();
                             $("#resources").append(
-                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to use this Webmap'>Instructions</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a>"
+                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='javascript:void(0)'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a>"
                             );
                             // <br><a>&bull; </a><a href='ftp://ftp.dot.state.tx.us/pub/txdot-info/tpp/countyfiles/2016/" + caps + "_2016.zip' id='FTPlink' target='Download' title='Download CRI Zipfile Packet for Selected County'>Download Packet</a>"); -mw
                             var queryTask = new QueryTask(countiesURL);
@@ -544,12 +717,18 @@
                                 defaultSymbol: false,
                                 title: "Surface Type"
                             }, {
+                                layer: edits_2018,
+                                defaultSymbol: false,
+                                title: "2018 Markup"
+                            },
+                            {
                                 layer: counties,
                                 defaultSymbol: false,
                                 title: "Active County"
-                            }];
+                            }
+                        ];
                             templateLayers = [cr_updatesLyr];
-                            refLayers = [cr_updatesLyr, countyroads];
+                            refLayers = [cr_updatesLyr, countyroads, edits_2018];
                             serviceURL = cr_updatesURL;
                             editorInfos = [{
                                 'featureLayer': cr_updatesLyr,
@@ -566,7 +745,7 @@
                                 }, {
                                     'fieldName': "CHANGE",
                                     'label': "Update Type",
-                                    'isEditable': true
+                                    'isEditable': false
                                 }, {
                                     'fieldName': "STREET_NM",
                                     'label': "Full Street Name",
@@ -611,6 +790,35 @@
                                 }, {
                                     'fieldName': "NUM_LANES",
                                     'label': "Number of Lanes"
+                                }]
+                            }, {
+                                'featureLayer': edits_2018,
+                                'showAttachments': false,
+                                'isEditable': false,
+                                'fieldInfos': [{
+                                    'fieldName': "CNTY_NBR",
+                                    'label': "County Number"
+                                }, {
+                                    'fieldName': "CNTY_NM",
+                                    'label': "County Name"
+                                }, {
+                                    'fieldName': "LENGTH",
+                                    'label': "Length (Miles)"
+                                }, {
+                                    'fieldName': "STREET_NM",
+                                    'label': "Full Street Name"
+                                }, {
+                                    'fieldName': "DESIGN",
+                                    'label': "Roadway Design"
+                                }, {
+                                    'fieldName': "SURFACE",
+                                    'label': "Surface Type"
+                                }, {
+                                    'fieldName': "NUM_LANES",
+                                    'label': "Number of Lanes"
+                                }, {
+                                    'fieldname': "COMMENT",
+                                    'label': "TxDOT Comments"
                                 }]
                             }];
                         } else if (updateClass == "LS") {
@@ -733,8 +941,10 @@
                         });
                         var select1 = refLayers[0].on("click", selectFeature);
                         var select2 = refLayers[1].on("click", selectFeature);
+                        var select3 = refLayers[2].on("click",selectFeature);
                         featureLayerEvents.push(select1);
                         featureLayerEvents.push(select2);
+                        featureLayerEvents.push(select3);
                         map.enableDoubleClickZoom();
                     }
                     function disableEvents() {
@@ -750,12 +960,24 @@
                             respectCurrentMapScale: true
                         }, "legend");
                         legend.startup();
+                        // function displayLegend() {
+                        //     var mapZoom = map.getZoom();
+                        //     if (mapZoom <= 10) {
+                        //         dom.byId("legend").style.display = "none";
+                        //     }
+                        //     if (mapZoom > 11) {
+                        //         dom.byId("legend").style.display = "block";
+                        //     }
+                        // }
+                        // displayLegend();
                     }
                     function initTemplates(templateLayers) {
                         var tpCustom = new TemplatePicker({
                             featureLayers: templateLayers,
                             grouping: false,
-                            columns: 1,
+                            columns: 4,
+                            // rows: 2,
+                            // showTooltip: true,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
                         tpCustom.startup();
@@ -765,6 +987,7 @@
                         tpCustom.on("selection-change", function() {
                             refLayers[0].clearSelection();
                             refLayers[1].clearSelection();
+                            refLayers[2].clearSelection();
                             map.infoWindow.hide();
                             if (tpCustom.getSelected()) {
                                 selectedTemplate = tpCustom.getSelected();
@@ -777,7 +1000,7 @@
                                 setupSelection();
                             }
                         });
-                        drawToolbar.on("draw-end", function(evt) {
+                        drawToolbar.on("draw-complete", function(evt) {
                             drawToolbar.deactivate();
                             map.setMapCursor("default");
                             setupSelection();
@@ -789,11 +1012,42 @@
                             autoAttributes = lang.mixin(blankAttributes, {
                                 "SOURCE": org,
                                 "LENGTH": rounder,
-                                "UPDATE_DT": t
+                                "UPDATE_DT": t,
                             });
+
+                            // Autopopulate REMOVE operation with default values
+                            if (autoAttributes.CHANGE == "Remove EXISTING Road") {
+                                autoAttributes.DESIGN = 2;
+                                autoAttributes.NUM_LANES = 2;
+                                autoAttributes.SURFACE = 10;
+                            }
+
+                            // Show infoWindow when drawing is complete
                             var newGraphic = new Graphic(evt.geometry, null, autoAttributes);
-                            selectedTemplate.featureLayer.applyEdits([newGraphic], null, null);
+                            var scrnPt = new Point (newGraphic.geometry.paths[0][0][0],newGraphic.geometry.paths[0][0][1], newGraphic.geometry.spatialReference);
+                            // Wrap logic in callback function that waits for edits to post to AGO. This avoids empty infoWindow
+                            var newEdit = selectedTemplate.featureLayer.applyEdits([newGraphic], null, null, function(){
+                                //Reset Edit Geometry Button
+                                dom.byId("dijit_form_Button_6").parentElement.style.display = "block";
+                                map.infoWindow.setTitle("Inventory Changes");
+                                // Set edit operation type and editable features based on operation type
+                                var operation = autoAttributes.CHANGE;
+                                // Get Infowindow Title and disable close option for Inventory Updates
+                                var theTitle = map.infoWindow._title.innerHTML
+                                var titleButton = document.getElementsByClassName("titleButton");
+                                setTitleBtn(titleButton,theTitle);
+                                map.infoWindow.show(scrnPt, map.getInfoWindowAnchor(scrnPt));
+                                if (operation === "Update Attributes Only") {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                    dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
+                                }
+                                else {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                }
+                            });
                             tpCustom.clearSelection();
+
+
                         });
                         $('#collapseOne').removeClass('in');
                         $('#collapseOneHdr').addClass('collapsed');
@@ -804,26 +1058,44 @@
                     function selectFeature(evt) {
                         refLayers[0].clearSelection();
                         refLayers[1].clearSelection();
+                        refLayers[2].clearSelection();
                         var centerPoint = new Point(evt.mapPoint.x, evt.mapPoint.y, evt.mapPoint.spatialReference);
                         var mapWidth = map.extent.getWidth();
                         var pixelWidth = mapWidth / map.width;
-                        var tolerance = 5 * pixelWidth;
+                        var tolerance = 10 * pixelWidth;
                         var queryExtent = new Extent(1, 1, tolerance, tolerance, evt.mapPoint.spatialReference);
                         var selectQuery = new Query();
                         selectQuery.geometry = queryExtent.centerAt(centerPoint);
                         refLayers[0].selectFeatures(selectQuery, FeatureLayer.SELECTION_NEW, function(features) {
                             if (features.length > 0) {
-                                // map.infoWindow.setTitle(features[0].getLayer().name);
+                                //Reset Edit Geometry Button
+                                dom.byId("dijit_form_Button_6").parentElement.style.display = "block";
                                 map.infoWindow.setTitle("Inventory Changes");
+                                // Set edit operation type and editable features based on operation type
+                                editOperation = aiCustom.layerInfos[0].fieldInfos[2].dijit.displayedValue;
+                                // Get Infowindow Title and disable close option for Inventory Updates
+                                var theTitle = map.infoWindow._title.innerHTML
+                                var titleButton = document.getElementsByClassName("titleButton");
+                                setTitleBtn(titleButton,theTitle);
                                 map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-                                document.getElementById("dijit_form_Button_5").parentElement.style.display = "block";
+                                if (editOperation === "Update Attributes") {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                    dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
+                                }
+                                else {
+                                    dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
+                                }
                             } else {
                                 refLayers[1].selectFeatures(selectQuery, FeatureLayer.SELECTION_NEW, function(features) {
                                     if (features.length > 0) {
-                                        // map.infoWindow.setTitle(features[0].getLayer().name);
                                         map.infoWindow.setTitle("Current Inventory");
+                                        // Get Infowindow Title and enable close option for Current Inventory
+                                        var theTitle = map.infoWindow._title.innerHTML
+                                        var titleButton = document.getElementsByClassName("titleButton");
+                                        setTitleBtn(titleButton,theTitle);
                                         map.infoWindow.show(evt.screenPoint, map.getInfoWindowAnchor(evt.screenPoint));
-                                        document.getElementById("dijit_form_Button_5").parentElement.style.display = "none";
+                                        dom.byId("dijit_form_Button_5").parentElement.style.display = "none";
+                                        dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
                                     } else {
                                         map.infoWindow.hide();
                                     }
@@ -831,20 +1103,75 @@
                             }
                         });
                     }
+
+                    // FUNCTION TO DYNAMICALLY SET TITLEBUTTON OF ATTRIBUTE INSPECTOR BASED ON INVENTORY TYPE
+                    function setTitleBtn(titleButton,theTitle) {
+                        var i;
+                        for (i=0; i<titleButton.length; i++) {
+                            if (theTitle === "Current Inventory") {
+                                titleButton[i].style.display = "block";
+                            }
+                            else {
+                                titleButton[i].style.display = "none";
+                            }
+                        }
+                    };
+
                     function initAttributes(editorInfos) {
                         setupSelection();
                         aiCustom = new AttributeInspector({
                             layerInfos: editorInfos
                         }, domConstruct.create("div"));
+                        ////SAVE BUTTON
+                        var saveBtn = new dojoButton({
+                            label: "Confirm Edit"
+                        }, domConstruct.create("div"));
+                        domConstruct.place(saveBtn.domNode, aiCustom.deleteBtn.domNode, "after");
+                        // Verify all fields are complete based on edit operation type
+                        saveBtn.on("click", function(features) {
+                            var alertList = getAlertList();
+                            if (alertList.length>0) {
+                                swal({
+                                    title: "Oops!",
+                                    text: "The following fields are blank and require a value: \n\n"+alertList,
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                });
+                            }
+                            else {
+                                swal({
+                                    title: "Edit Confirmed!",
+                                    icon: "success",
+                                    buttons: false,
+                                    timer: 1500
+                                });
+                                map.infoWindow.hide();
+                            }
+
+                        });
+                        ////EDIT GEOMETRY BUTTON
                         var geomButton = new dojoButton({
                             label: "Edit Geometry"
                         }, domConstruct.create("div"));
                         domConstruct.place(geomButton.domNode, aiCustom.deleteBtn.domNode, "after");
                         geomButton.on("click", function() {
-                            var features = refLayers[0].getSelectedFeatures();
-                            var feature = features[0];
-                            map.infoWindow.hide();
-                            activateToolbar(feature);
+                            var alertList = getAlertList();
+                            if (alertList.length>0) {
+                                // Alert using Sweet Alert library
+                                swal({
+                                    title: "Oops!",
+                                    text: "The following fields are blank and require a value: \n\n"+alertList,
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                });
+                            }
+                            else {
+                                var features = refLayers[0].getSelectedFeatures();//issue is this function call (no features are selected yet)
+                                var feature = features[0];
+                                map.infoWindow.hide();
+                                activateToolbar(feature);
+                            }
+
                         });
                         aiCustom.on("attribute-change", function(evt) {
                             evt.feature.attributes[evt.fieldName] = evt.fieldValue;
@@ -862,6 +1189,35 @@
                             refLayers[1].clearSelection();
                         });
                     }
+
+                    function getAlertList() {
+                        var fieldList = [];
+                        var alertList = [];
+                        var strNm = {
+                            "name": "Full Street Name ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[3].dijit.value
+                        };
+                        var dsgn = {
+                            "name": " Roadway Design ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[4].dijit.value
+                        };
+                        var srf = {
+                            "name": " Surface Type ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[5].dijit.value
+                        };
+                        var numLn = {
+                            "name": " Number of Lanes ",
+                            "value": aiCustom.layerInfos[0].fieldInfos[6].dijit.value
+                        };
+                        fieldList.push(strNm,dsgn,srf,numLn);
+                        for (var i=0; i<fieldList.length;i++) {
+                            if (fieldList[i].value === "") {
+                                alertList.push(fieldList[i].name);
+                            }
+                        }
+                        return alertList;
+                    }
+
                     function buildEditToolbar() {
                         editToolbar = new Edit(map);
                         editToolbar.on("deactivate", function(evt) {
@@ -889,8 +1245,21 @@
                             allowDeleteVertices: true,
                             ghostLineSymbol: ghostLine
                         };
-                        editToolbar.activate(Edit.EDIT_VERTICES, graphic, options);
+                        if (graphic==undefined) {
+                            swal({
+                                text: "Please Re-Select Line to Edit Geometry",
+                                icon: "info",
+                                buttons: false,
+                                timer: 1500,
+                                closeOnClickOutside: true,
+                            });
+                        }
+                        else {
+                            editToolbar.activate(Edit.EDIT_VERTICES, graphic, options);
+                        }
+
                     }
+
                     ////DOWNLOAD FUNCTIONS
                     on(dom.byId("download"), "click", function() {
                         var gp = new Geoprocessor("https://maps.dot.state.tx.us/arcgis/rest/services/TPPuser/DUSA_Download/GPServer/Download");
@@ -1140,6 +1509,22 @@
                         $("#clearDisplay").attr("style", "display:none;");
                     }
                     ////JQUERY EVENTS
+
+                    // toggle edits option (comment to disable)
+                    $("#layerToggle").click(function() {
+                        if (!editView) {
+                            // map.addLayer(edits_2018);
+                            edits_2018.show();
+                            $("#layerToggle").html("Hide 2018 Markup");
+                            editView = true;
+                        }
+                        else {
+                            editView = false;
+                            // map.removeLayer(edits_2018);
+                            edits_2018.hide();
+                            $("#layerToggle").html("View 2018 Markup");
+                        }
+                    });
                     $("#needHelp").click(function() {
                         $("#popHelp").toggle("fast");
                     });
@@ -1154,10 +1539,37 @@
                         $("#basemapPanel").slideToggle("fast");
                         $("#basemapArrow").toggleClass('glyphicon-chevron-up glyphicon-chevron-down');
                     });
-                    $('#logoff').click(function() {
+                    $('#exitApp').click(function() {
                         IdentityManager.destroyCredentials();
                         location.reload(true); // force reload on firefox
                         // window.history.back();
+                    });
+                    $('#basemapToggle').click(function() {
+                        if (spm) {
+                            TxDOTVectorTileLayer.hide();
+                            google.show();
+                            $('#basemapToggle').html("View TxDOT Map");
+                            spm = false;
+                        }
+                        else {
+                            spm = true;
+                            google.hide();
+                            TxDOTVectorTileLayer.show();
+                            $('#basemapToggle').html("View TxDOT Imagery");
+                        }
+                    });
+                    $('#googleLink').click(function() {
+                    	var ctr = map.extent.getCenter();
+                        var lat = ctr.getLatitude();
+                        var lon = ctr.getLongitude();
+                        var level = map.getLevel();
+                        window.open("https://www.google.com/maps/@"+lat+","+lon+","+level+"z");
+                    });
+                    $('#clearMeasure').click(function() {
+                        measurement.setTool("area", false);
+                        measurement.setTool("distance", false);
+                        measurement.setTool("location", false);
+                        measurement.clearResult();
                     });
                     $('#clearDisplay').click(clearDisplay);
 
@@ -1262,7 +1674,9 @@
                             // check to see if selection matches AGO credentials
                             if (AGO_user === CNTY_user || AGO_user === "GIS") {
                                 presentData();
-                                $("#user").html($("#selectOrg option[value='" + org + "']").text());
+                                dom.byId("user").innerHTML = countyName;
+                                // $("#user").html.(AGO_user);
+                                // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                 console.log("Success!")
                             }
                             else {
@@ -1270,7 +1684,9 @@
                                 if (TXDOT_login) {
                                     var TXDOT_user = TXDOT_login[0];
                                     presentData();
-                                    $("#user").html($("#selectOrg option[value='" + org + "']").text());
+                                    dom.byId("user").innerHTML = countyName;
+                                    // $("#user").html.(AGO_user);
+                                    // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                     console.log("TXDOT Match!")
                                 }
                                 else {
@@ -1371,7 +1787,7 @@
                                 <button class="btn btn-primary btn-lg btn-block" id="signInButton" disabled>Go!</button>
                                     <a id="needHelp" href="#">Need Help?</a>
                                     <div id="popHelp" style="display:none">
-                                            Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at <a href="mailto:TPP-GIS@txdot.gov?Subject=RIU%20Access%20Code%20Request" target="_top" style="color:blue;">TPP-GIS@txdot.gov</a></p>
+                                            Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at <a href="mailto:TPP-GIS@txdot.gov?Subject=CRI%20DUSA%20Question" target="_top" style="color:blue;">TPP-GIS@txdot.gov</a></p>
                                     </div>
                             </div>
                         </form>
@@ -1388,26 +1804,104 @@
                 <div id="menuPanel">
                     <div class="panel-group" id="accordion">
                         <div class="panel panel-default">
+                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" id="collapseFourHdr" style="cursor: pointer;">
+                                <h4 class="panel-title">Resources &nbsp&nbsp
+                                    <span class="glyphicon glyphicon-info-sign" style="float:right"></span>
+                                </h4>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div id="resources"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
                             <div class="panel-heading btn-default" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" id="collapseOneHdr" style="cursor: pointer;">
-                                <h4 class="panel-title">Edit</h4>
+                                <h4 class="panel-title">Edit
+                                    <span class="glyphicon glyphicon-pencil" style="float:right"></span>
+                                </h4>
                             </div>
                             <div id="collapseOne" class="panel-collapse collapse in">
                                 <div class="panel-body" style="text-align:center;">
-                                    <!--<p>Edit the data stuff here. Template, edit tools, etc. Submits edit button which sends email?</p>-->
                                     <div id="editTemplate"></div>
                                     <br>
+                                    <a href="./resources/EditInstructions.pdf" target="EditInstructions" title="How to Edit" style="text-decoration:none">
+                                        <button type="button" class="btn btn-default btn-sm btn-block" id="editHelp">How to Edit
+                                            <span class="glyphicon glyphicon-pencil" style="float: right;"></span>
+                                        </button>
+                                    </a>
+                                    <br>
+                                    <div>
+                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Markup">View 2018 Markup</button>
+                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2018 Markup" data-toggle='modal' data-target='#editInfoModal'>
+                                            <span class="glyphicon glyphicon-question-sign">
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <br>
                                     <div id="legend"></div>
-                                    <a href="./resources/EditInstructions.pdf" target="EditInstructions" title="How to Edit"><button type="button" class="helpButton" id="editHelp">?</button></a>
+                                    <!-- <button type="button" class="btn btn-default" id="editInfoBtn" title="About County Road Criteria" data-toggle='modal' data-target='#editInfoModal'>
+                                        <span class="glyphicon glyphicon-question-sign">
+                                        </span>
+                                    </button>
+                                    <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Edits">View 2018 Edits</button> -->
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" id="collapseFiveHdr" style="cursor: pointer;">
+                                <h4 class="panel-title">Search
+                                    <span class="glyphicon glyphicon-search" style="float:right"></span>
+                                </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p style="font-weight:bold;text-align:center;"></p>
+                                    <div id="search"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseSix" id="collapseSixHdr" style="cursor: pointer;">
+                                <h4 class="panel-title">Map Tools
+                                    <span class="glyphicon glyphicon-wrench" id="glyphTools"style="float:right"></span>
+                                </h4>
+                            </div>
+                            <div id="collapseSix" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p style="font-weight:bold;text-align:center;"></p>
+                                    <div id="dojoContent" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'center'">
+                                        <div id="borderDiv">
+                                            <div id="mainWindow"  title="Measurement Toolkit"data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline',gutters:false" style="width:100%; height:100%;">
+                                                <div id="titlePane"data-dojo-type="dijit/TitlePane" data-dojo-props="title:'Measure Tools', closable:true, open:false">
+                                                    <div id="measurementDiv"></div>
+                                                    <button type="button" class="btn btn-default btn-sm" id="clearMeasure"><span class="glyphicon glyphicon-remove"></span> Clear</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button id="basemapToggle" type="button" class="btn btn-default btn-block" title="Toggle Basemap">View TxDOT Imagery</button>
+                                    <button id="googleLink" type="button" class="btn btn-default btn-block" title="Launch Google Maps">Jump To Google &nbsp&nbsp<span class="glyphicon glyphicon-share-alt" style="float: right;"></span></button>
+
                                 </div>
                             </div>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" style="cursor: pointer;">
-                                <h4 class="panel-title">Download</h4>
+                                <h4 class="panel-title">Download
+                                    <span class="glyphicon glyphicon-save" style="float:right"></span>
+                                </h4>
                             </div>
                             <div id="collapseTwo" class="panel-collapse collapse">
                                 <div class="panel-body" style="text-align:center;">
-                                    <p style="font-weight:bold;">Options</p>
+                                    <!-- <p style="font-weight:bold;">Options</p> -->
+                                    <p style="font-weight:bold;text-align:center;color:red;">Note: This is an OPTIONAL Step for Users with Advanced GIS Skills</p>
+                                    <a href="./resources/DownloadInstructions.pdf" target="DownloadInstructions" title="How to Download" style="text-decoration:none">
+                                        <button type="button" class="btn btn-default btn-sm" id="downloadHelp">How To Download &nbsp
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                        </button>
+                                    </a><br><br>
                                     <p style="text-align:left;">1. Empty schema template shapefile<br>2. Copy of road inventory</p>
                                     <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p>
                                     <select class="form-control" id="chooseData">
@@ -1417,26 +1911,36 @@
                                         <option value="SHP" selected>Shapefile</option>  <option value="FGDB">File Geodatabase</option>
                                         <option value="CSV">Table</option>
                                     </select>
-                                    <button type="button" class="btn btn-default" id="download"><span class="glyphicon glyphicon-download-alt"></span> Download!</button>
+                                    <br>
+                                    <button type="button" class="btn btn-default" id="download"><span class="glyphicon glyphicon-save"></span> Download!</button>
                                     <div id="downloadMarquee" style="text-align:left;"></div>
-                                    <a href="./resources/DownloadInstructions.pdf" target="DownloadInstructions" title="How to Download"><button type="button" class="helpButton" id="downloadHelp">?</button></a>
+                                    <!-- <a href="./resources/DownloadInstructions.pdf" target="DownloadInstructions" title="How to Download"><button type="button" class="helpButton" id="downloadHelp">?</button></a> -->
                                 </div>
                             </div>
                         </div>
                         <div class="panel panel-default">
                             <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" style="cursor: pointer;">
-                                <h4 class="panel-title">Upload</h4>
+                                <h4 class="panel-title">Upload
+                                    <span class="glyphicon glyphicon-open" style="float:right"></span>
+                                </h4>
                             </div>
                             <div id="collapseThree" class="panel-collapse collapse">
                                 <div class="panel-body" style="text-align:center;">
-                                    <p style="font-weight:bold;text-align:center;">Options</p>
+                                    <!-- <p style="font-weight:bold;text-align:center;">Options</p> -->
+                                    <p style="font-weight:bold;text-align:center;color:red;">Note: This is an OPTIONAL Step for Users with Advanced GIS Skills</p>
+                                    <a href="./resources/UploadInstructions.pdf" target="UploadInstructions" title="How to Upload"style="text-decoration:none">
+                                        <button type="button" class="btn btn-default btn-sm" id="downloadHelp">How To Upload &nbsp
+                                            <span class="glyphicon glyphicon-question-sign"></span>
+                                        </button>
+                                    </a><br><br>
                                     <p>Upload a zipped (.zip) shapefile for:</p>
                                     <p style="text-align:left;">1. Temporary display<br>2. Bulk Inventory Submission</p>
-                                    <div style='padding-left:4px;'><!-- swamp thang -->
+                                    <div style='padding-left:4px;'>
                                         <p style="font-size: xx-small;">Help with <a target='_blank' style="color:blue;" href="https://doc.arcgis.com/en/arcgis-online/reference/shapefiles.htm">Shapefiles</a></p>
                                         <select class="form-control" id="chooseUpload">
                                             <option value="DISPLAY" selected>Temporary Display</option> <option value="UPLOAD">Bulk Submission</option>
                                         </select>
+                                        <br>
                                         <form class="form-group" enctype="multipart/form-data" method="post" id="uploadForm">
                                             <div class="form-group">
                                                 <span class="btn btn-default btn-file"><span class="glyphicon glyphicon-search"></span> Choose a File
@@ -1448,48 +1952,152 @@
                                         <div id="fileInfo" style="text-align:left;"></div>
                                         <div id="uploadMarquee" style="text-align:left;"></div>
                                         <button type="button" class="btn btn-default" id="clearDisplay" style="display:none;"><span class="glyphicon glyphicon-erase"></span> Clear Display</button>
-                                        <a href="./resources/UploadInstructions.pdf" target="UploadInstructions" title="How to Upload"><button type="button" class="helpButton" id="uploadHelp">?</button></a>
+                                        <!-- <a href="./resources/UploadInstructions.pdf" target="UploadInstructions" title="How to Upload"><button type="button" class="helpButton" id="uploadHelp">?</button></a> -->
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="panel panel-default">
-                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" id="collapseFourHdr" style="cursor: pointer;">
-                                <h4 class="panel-title">Resources</h4>
-                            </div>
-                            <div id="collapseFour" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <div id="resources"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading btn-default collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" id="collapseFiveHdr" style="cursor: pointer;">
-                                <h4 class="panel-title">Search</h4>
-                            </div>
-                            <div id="collapseFive" class="panel-collapse collapse">
-                                <div class="panel-body">
-                                    <p style="font-weight:bold;text-align:center;"></p>
-                                    <div id="search"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <button id="homeBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-home"></span></button>
+            <button id="homeBtn" type="button" class="btn btn-default" title="Home"><span class="glyphicon glyphicon-home"></span></button>
             <button id="menuBtn" type="button" class="btn btn-default"><span id="menuArrow" class="glyphicon glyphicon-chevron-up"></span></button>
-            <button id="logoff" type="button" class="btn btn-default">Log Off</button>
-            <span id="user"></span>
+            <div id="userCreds">
+                <span id="user"></span>
+                <button id="logoff" type="button" class="btn btn-default btn-block"data-toggle="modal" data-target="#logoffModal">Save & Log Off &nbsp&nbsp<span class="glyphicon glyphicon-floppy-disk"></span><span class="glyphicon glyphicon-floppy-saved"></span></button>
+
+            </div>
+
+            <!-- <button id="basemapToggle" type="button" class="btn btn-default">View <br> TxDOT <br> Imagery</button>
+            <button id="googleLink" type="button" class="btn btn-default">Jump To<br> Google <br>&nbsp</button> -->
+
             <span id="info"></span>
-            <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
+            <!-- <button id="basemapTrigger" type="button" class="btn btn-default"><span id="basemapArrow" class="glyphicon glyphicon-chevron-up"></span></button>
             <div id="basemapPanel">
                 <div id="basemapContainer" class="container" style="width:100%;">
                     <div id="basemapGallery" class="row"></div>
                 </div>
+            </div> -->
+
+            <!-- Log Off Modal -->
+            <div class="modal fade" id="logoffModal" tabindex="-1" role="dialog" aria-labelledby="logoffModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h1 class="text-center" id="logoffModalLabel">Data Updates & Sharing Application</h1>
+                  </div>
+                  <div class="modal-body">
+                    <h3>
+                        Save Changes and Log Off?
+                    </h3>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success" id="exitApp">Yes</button>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
+
+        <!-- About Modal -->
+        <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog" aria-labelledby="aboutModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.3.0)</h3>
+              </div>
+              <div class="modal-body">
+                <h4>Release notes:</h4>
+                <p>On March 21, 2019, the valid updates submitted from 2018 were applied to the County Road Base Layer.
+                Several key enhancements were made to the Application in response to feedback from the Counties, including the following:</p><br>
+                <ul>
+                    <li><strong>Menu Panel Layout</strong>
+                       <p>Minor changes to the layout of the Menu Panel were made to allow for a more streamlined editing workflow</p>
+                    </li>
+                    <li><strong>Improved Popup Window</strong>
+                      <p>The editing pop-up window has been improved for clearer markups</p>
+                    </li>
+                    <li><strong>Confirm Edits Button</strong>
+                      <p>A new button in the pop-up window performs validation checks to ensure all required information is included</p>
+                    </li>
+                    <li><strong>Save and Log Out</strong>
+                      <p>A new button that helps clarify that all user edits have been successfully saved, and securely logs user out</p>
+                    </li>
+                    <li><strong>Measure Tool</strong>
+                      <p>A measure tool was added to help measure the distance along roads, as well as area and lat/lon positions</p>
+                    </li>
+                    <li><strong>Basemap Gallery</strong>
+                        <p>The basemap gallery is now a toggle button that allows users to easily switch between Imagery and TxDOT basemaps</p>
+                    </li>
+                    <li><strong>Jump to Google</strong>
+                      <p>A button that opens a new browser tab in Google Maps centered at the current location in DUSA. Useful for examining roads with Street View</p>
+                    </li>
+                    <li><strong>2018 Reference Layer</strong>
+                      <p>A new ‘reference layer’ was added, which shows the markups submitted in 2018
+                          that <i>did not</i> meet the criteria for a county road, or were not updated for another reason</p>
+                    </li>
+                </ul>
+
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Edit Info Modal -->
+        <div class="modal fade" id="editInfoModal" tabindex="-1" role="dialog" aria-labelledby="editInfoModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="editInfoModalLabel">2018 Markup Information</h3>
+              </div>
+              <div class="modal-body">
+                <h4>About 2018 Markups that did not meet criteria</h4>
+                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                        or were not updated for another reason. Possible reasons include: </p><br>
+                        <ul>
+                            <li><strong>City Limit Interaction</strong>
+                                <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
+                                Until we are able to update a city boundary, we cannot update the affected county roads and city streets.</p>
+                            </li>
+                            <li><strong>Markup was on a Private Road</strong>
+                            </li><br>
+                            <li><strong>Markup was on a Gated Road</strong>
+                            </li><br>
+                            <li><strong>Road Already Exists</strong>
+                            </li><br>
+                            <li><strong>Markup Unclear</strong>
+                            </li><br>
+                            <li><strong>Other Reason</strong></li><br>
+                        </ul>
+                        <h4>Questions?</h4>
+                        <div>
+                            Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at
+                            <a href="mailto:TPP-GIS@txdot.gov?Subject=CRI%20DUSA%20Question" target="_top" style="color:blue;">TPP-GIS@txdot.gov</a></p>
+                        </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
 
     </body>
 </html>
