@@ -560,7 +560,8 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0";
+                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0"; //2018 dev version
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev2/FeatureServer/0"; //testing domains
                     // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -978,6 +979,7 @@
                             columns: 4,
                             // rows: 2,
                             // showTooltip: true,
+                            // useLegend: true,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
                         tpCustom.startup();
@@ -1014,9 +1016,9 @@
                                 "LENGTH": rounder,
                                 "UPDATE_DT": t,
                             });
-
+                            console.log(autoAttributes);
                             // Autopopulate REMOVE operation with default values
-                            if (autoAttributes.CHANGE == "Remove EXISTING Road") {
+                            if (autoAttributes.CHANGE == "2") {
                                 autoAttributes.DESIGN = 2;
                                 autoAttributes.NUM_LANES = 2;
                                 autoAttributes.SURFACE = 10;
@@ -1037,7 +1039,7 @@
                                 var titleButton = document.getElementsByClassName("titleButton");
                                 setTitleBtn(titleButton,theTitle);
                                 map.infoWindow.show(scrnPt, map.getInfoWindowAnchor(scrnPt));
-                                if (operation === "Update Attributes Only") {
+                                if (operation == "3") {
                                     dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
                                     dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
                                 }
@@ -1321,7 +1323,7 @@
                         var params = {
                             'name': name,
                             'targetSR': map.spatialReference,
-                            'maxRecordCount': 1000,
+                            'maxRecordCount': 2000,
                             'enforceInputFileSizeLimit': true,
                             'enforceOutputJsonSizeLimit': true,
                             'layerInfo': {
@@ -1330,7 +1332,7 @@
                                         'type': 'simple',
                                         'symbol': {
                                             'color': [145,145,255,255],
-                                            'width': 3,
+                                            'width': 4.5,
                                             'type': 'esriSLS',
                                             'style': 'esriSLSSolid'
                                         }
@@ -1383,38 +1385,106 @@
                         console.log(error);
                     }
                     function verifySchema(featureCollection) {
-                        var templateFields = ['SOURCE', 'UPDATE_DT', 'LENGTH', 'CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES', 'COMMENT'];
+                        var templateFields = ['CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES']; //no need to check source and length fields for nulls
                         var fieldFlag = false;
                         var attFlag = false;
                         var badField;
+                        var changeList = [];
+                        var designList = [];
+                        var surfList = [];
+                        var numLnList = [];
                         array.forEach(featureCollection.layers, function(layer) {
                             array.forEach(layer.featureSet.features, function(feature) {
+                                var changeField = feature.attributes.CHANGE;
+                                var designField = feature.attributes.DESIGN;
+                                var surfField = feature.attributes.SURFACE;
+                                var numLnField = feature.attributes.NUM_LANES;
+                                changeList.push(changeField);
+                                designList.push(designField);
+                                surfList.push(surfField);
+                                numLnList.push(numLnField);
                                 array.forEach(templateFields, function(field) {
+                                    console.log("checking for nulls");
                                     if (field in feature.attributes) {
                                         var att = feature.attributes[field];
-                                        if (att == undefined || att == null || att == " " || att == "") {
-                                            // attFlag = true;
-                                            // badField = field;
-                                            feature.attributes[field] = 0;
+                                        if (att == undefined || att == null || att == " " || att == "") { //check to make sure no blank/null values
+                                            attFlag = true;
+                                            badField = field;
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         fieldFlag = true;
                                     }
                                 });
                             });
                         });
+                        for (var i=0; i<changeList.length;i++) {
+                            console.log("checking for bad change values");
+                            changeList[i] = parseInt(changeList[i],10);                                                    //WORKS!
+                            if (isNaN(changeList[i]) || changeList[i] ==0 || changeList[i] >4) { //check to make sure CHANGE values only 1-4, no text
+                                attFlag = true;
+                                badField = "CHANGE";
+                                console.log(changeList[i]);
+                            }
+                        };
+                        for (var i=0; i<designList.length;i++) {
+                            console.log("checking for bad design values");
+                            designList[i] = parseInt(designList[i],10);                                                    //WORKS!
+                            if (isNaN(designList[i]) || designList[i] ==0 || designList[i] >3) { //check to make sure DESIGN values only 1-3, no text
+                                attFlag = true;
+                                badField = "DESIGN";
+                                console.log(designList[i]);
+                            }
+                        };
+                        for (var i=0; i<surfList.length;i++) {
+                            console.log("checking for bad surface values");
+                            surfList[i] = parseInt(surfList[i],10);                                                         //WORKS!
+                            if (isNaN(surfList[i]) || surfList==0 ||(surfList[i] >2 && surfList[i] <10) || surfList[i] >13) { //check to make sure SURFACE values only 2 or 10,11,12,13,no text
+                                attFlag = true;
+                                badField = "SURFACE";
+                                console.log(surfList[i]);
+                            }
+                        };
+                        for (var i=0; i<numLnList.length;i++) {
+                            console.log("checking for bad num_ln values");
+                            numLnList[i] = parseInt(numLnList[i],10);                                                        //WORKS!
+                            if (isNaN(numLnList[i]) || numLnList[i] ==0 || numLnList[i] >6) { //check to make sure CHANGE values only 1-6, no text
+                                attFlag = true;
+                                badField = "NUM_LANES";
+                                console.log(numLnList[i]);
+                            }
+                        };
+
                         if (fieldFlag) {
-                            alert("Shapefile does not contain all required fields.");
-                            dom.byId('uploadMarquee').innerHTML =
-                                '<p style="color:red">Shapefile does not contain all required fields.<br><p style="font-size: xx-small;">Updates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.</p></p>';
-                        } else {
+                            swal({
+                                title: "Oops!",
+                                text: "The uploaded shapefile does not contain all the required fields.\n\nUpdates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.",
+                                icon: "error",
+                                closeOnClickOutside: false,
+                            });
+                            // dom.byId('uploadMarquee').innerHTML =
+                            //     '<p style="color:red">Shapefile does not contain all required fields.<br><p style="font-size: xx-small;">Updates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.</p></p>';
+                        }
+                        else {
                             if (attFlag) {
-                                alert(badField + " has a NULL or blank value which must be populated.");
-                                dom.byId('uploadMarquee').innerHTML = '<p style="color:red">' + badField + " has a NULL or blank value which must be populated." + '</p>';
+                                swal({
+                                    title: "Oops!",
+                                    text: "The following fields have blank, NULL, or incorrect values which must be populated: \n\n"+badField,
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                });
+                                dom.byId('uploadMarquee').innerHTML = '<p style="color:red">' + badField + " has a blank, NULL or incorrect value which must be populated." + '</p>';
                             } else {
-                                dom.byId('uploadMarquee').innerHTML = '<p style="color:green">Submited shapefile has passed field requirement checks.</p>';
+                                // dom.byId('uploadMarquee').innerHTML = '<p style="color:green">Submited shapefile has passed field requirement checks.</p>';
                                 addShapefileToMap(featureCollection);
                                 serviceLoad(featureCollection);
+                                // swal({
+                                //     title: "Success!",
+                                //     text: "Submitted shapefile has passed field requirement checks",
+                                //     icon: "success",
+                                //     buttons: false,
+                                //     timer: 4000
+                                // });
                             }
                         }
                     }
@@ -1470,9 +1540,9 @@
                                 var lengther = geodesicUtils.geodesicLengths([fixed], Units.MILES);
                                 var rounder = parseFloat(lengther).toFixed(3);
                                 var att = feature.attributes.CHANGE;
-                                if (att == 0) {
-                                    att = "Update";
-                                }
+                                // if (att == 0) { //holyDiver
+                                //     att = "Update";
+                                // }
                                 theText = "{'geometry':{'paths':" + paths + "},'attributes':{'SOURCE':'" + org + "','UPDATE_DT':'" + t.toString() + "','LENGTH':" + rounder.toString() + ",'CHANGE':'" + att +
                                     "','STREET_NM':'" + feature.attributes.STREET_NM + "','DESIGN':'" + feature.attributes.DESIGN + "','SURFACE':'" + feature.attributes.SURFACE + "','NUM_LANES':" + feature.attributes.NUM_LANES +
                                     ",'COMMENT':'" + feature.attributes.COMMENT + "'}}";
@@ -1487,6 +1557,13 @@
                                         counter += 1;
                                         dom.byId('uploadMarquee').innerHTML = '<p style="color:green">' + counter.toString() + ' of ' + total.toString() + ' records uploaded to service.</p>';
                                         if (counter === total) {
+                                            swal({
+                                                title: "Success!",
+                                                text: "All records uploaded to TxDOT",
+                                                icon: "success",
+                                                buttons: false,
+                                                timer: 4000
+                                            });
                                             dom.byId('uploadMarquee').innerHTML = '<p style="color:green">All records uploaded to service.</p>';
                                             array.forEach(uploadedLayers, function(lyr) {
                                                 map.removeLayer(lyr);
