@@ -1474,7 +1474,6 @@
                             if (errorList.includes("NUM_LANES")){
                                 userNotify.push("NUM_LANES");
                             }
-                            // console.log(userNotify);
                             badField = userNotify.join("\n");
                             var badFieldAlt = userNotify.join(", ");
                             var numErrors = errorList.length;
@@ -1504,13 +1503,6 @@
                                 // dom.byId('uploadMarquee').innerHTML = '<p style="color:green">Submited shapefile has passed field requirement checks.</p>';
                                 addShapefileToMap(featureCollection);
                                 serviceLoad(featureCollection);
-                                // swal({
-                                //     title: "Success!",
-                                //     text: "Submitted shapefile has passed field requirement checks",
-                                //     icon: "success",
-                                //     buttons: false,
-                                //     timer: 4000
-                                // });
                             }
                         }
                     }
@@ -2132,6 +2124,9 @@
                     </li>
                     <li><strong>Save and Log Out</strong>
                       <p>A new button that helps clarify that all user edits have been successfully saved, and securely logs user out</p>
+                    </li>
+                    <li><strong>Improved Upload Functionality</strong>
+                      <p>The OPTIONAL Bulk Upload process now provides built-in error checks and user feedback to ensure that uploaded shapefiles contain all the required fields, values, etc.</p>
                     </li>
                     <li><strong>Measure Tool</strong>
                       <p>A measure tool was added to help measure the distance along roads, as well as area and lat/lon positions</p>
