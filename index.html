@@ -1998,10 +1998,14 @@
                                         </button>
                                     </a><br><br>
                                     <p style="text-align:left;">1. Empty schema template shapefile<br>2. Copy of road inventory</p>
-                                    <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p>
+                                    <!-- <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p> -->
+                                    <br>
+                                    <p style="font-size:small;">What Do You Want to Download?</p>
                                     <select class="form-control" id="chooseData">
                                         <option value="SCHEMA" selected>Schema Template</option> <option value="DATA">Road Inventory</option>
                                     </select>
+                                    <br>
+                                    <p style="font-size:small;">Download Format</p>
                                     <select class="form-control" id="downloadFormat"  disabled="disabled">
                                         <option value="SHP" selected>Shapefile</option>  <option value="FGDB">File Geodatabase</option>
                                         <option value="CSV">Table</option>
