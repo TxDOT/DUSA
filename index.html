@@ -706,7 +706,7 @@
                             var theName = pieces[0];
                             var caps = theName.toUpperCase();
                             $("#resources").append(
-                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='#'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a>"
+                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='#'data-toggle='modal'data-target='#aboutModal' title='About DUSA'>About</a>"
                             );
                             // <br><a>&bull; </a><a href='ftp://ftp.dot.state.tx.us/pub/txdot-info/tpp/countyfiles/2016/" + caps + "_2016.zip' id='FTPlink' target='Download' title='Download CRI Zipfile Packet for Selected County'>Download Packet</a>"); -mw
                             var queryTask = new QueryTask(countiesURL);
@@ -1603,9 +1603,9 @@
                         displayLayers = [];
                         $("#clearDisplay").attr("style", "display:none;");
                     }
+
                     ////JQUERY EVENTS
 
-                    // toggle edits option (comment to disable)
                     $("#layerToggle").click(function() {
                         if (!editView) {
                             // map.addLayer(edits_2018);
@@ -1772,7 +1772,17 @@
                                 dom.byId("user").innerHTML = countyName;
                                 // $("#user").html.(AGO_user);
                                 // $("#user").html($("#selectOrg option[value='" + org + "']").text());
-                                console.log("Success!")
+                                console.log("Success!");
+                                checkStorage();
+                                // if (localStorage.getItem("noDisplay") !== null) {
+                                //         $('#aboutModal').modal("hide");
+                                //         $('#noDisplay').hide();
+                                //     }
+                                // else {
+                                //     $('#aboutModal').modal("show");
+                                //     $('#noDisplay').show();
+                                // }
+
                             }
                             else {
                                 var TXDOT_login = AGO_user.match(/^.*TXDOT.*$/);
@@ -1782,7 +1792,18 @@
                                     dom.byId("user").innerHTML = countyName;
                                     // $("#user").html.(AGO_user);
                                     // $("#user").html($("#selectOrg option[value='" + org + "']").text());
-                                    console.log("TXDOT Match!")
+                                    console.log("TXDOT Match!");
+                                    checkStorage();
+                                    // if (localStorage.getItem("noDisplay") !== null) {
+                                    //         $('#aboutModal').modal("hide");
+                                    //         $('#noDisplay').hide();
+                                    //     }
+                                    // else {
+                                    //     $('#aboutModal').modal("show");
+                                    //     $('#noDisplay').show();
+                                    // }
+
+
                                 }
                                 else {
                                     if(confirm("Oops! You selected " + first + " County. \nPlease select "+ AGO_user + " County to make edits. \nPress 'OK' to select "+ AGO_user +" County or 'CANCEL' to log out.")){
@@ -1845,6 +1866,19 @@
                     }();
                 });
             });
+            function noDisplay() {
+                localStorage.setItem("noDisplay","hidden!");
+            }
+            function checkStorage() {
+                if (localStorage.getItem("noDisplay") !== null) {
+                        $('#aboutModal').modal("hide");
+                        // $('#noDisplay').hide();
+                    }
+                else {
+                    $('#aboutModal').modal("show");
+                    $('#noDisplay').show();
+                }
+            }
     </script>
 </head>
 
@@ -2151,6 +2185,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
               </div>
             </div>
           </div>
