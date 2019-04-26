@@ -1385,9 +1385,12 @@
                                 });
                             });
                         });
+
                         // recreate schema of CountyRoads_DUSA gdb
+
+                        console.log("Checking for bad CHANGE values");
                         for (var i=0; i<changeList.length;i++) {
-                            console.log("checking for bad CHANGE values");
+                            // console.log("Checking for bad CHANGE values");
                             changeList[i] = parseInt(changeList[i],10);
                             if (isNaN(changeList[i]) || changeList[i] ==0 || changeList[i] >4) { //check to make sure CHANGE values only 1-4, no text
                                 // attFlag = true;
@@ -1396,8 +1399,9 @@
                                 console.log(changeList[i]);
                             }
                         };
+                        console.log("Checking for bad DESIGN values");
                         for (var i=0; i<designList.length;i++) {
-                            console.log("checking for bad design values");
+                            // console.log("Checking for bad DESIGN values");
                             designList[i] = parseInt(designList[i],10);
                             if (isNaN(designList[i]) || designList[i] ==0 || designList[i] >3) { //check to make sure DESIGN values only 1-3, no text
                                 // attFlag = true;
@@ -1406,8 +1410,9 @@
                                 console.log(designList[i]);
                             }
                         };
+                        console.log("Checking for bad SURFACE values");
                         for (var i=0; i<surfList.length;i++) {
-                            console.log("checking for bad surface values");
+                            // console.log("checking for bad SURFACE values");
                             surfList[i] = parseInt(surfList[i],10);
                             if (isNaN(surfList[i]) || surfList==0 ||(surfList[i] >2 && surfList[i] <10) || surfList[i] >13) { //check to make sure SURFACE values only 2 or 10,11,12,13,no text
                                 // attFlag = true;
@@ -1416,8 +1421,9 @@
                                 console.log(surfList[i]);
                             }
                         };
+                        console.log("Checking for bad NUM_LANES values");
                         for (var i=0; i<numLnList.length;i++) {
-                            console.log("checking for bad num_ln values");
+                            // console.log("checking for bad NUM_LANES values");
                             numLnList[i] = parseInt(numLnList[i],10);                                                        //WORKS!
                             if (isNaN(numLnList[i]) || numLnList[i] ==0 || numLnList[i] >6) { //check to make sure CHANGE values only 1-6, no text
                                 // attFlag = true;
