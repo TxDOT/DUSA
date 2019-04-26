@@ -65,12 +65,6 @@
             position: absolute;
             bottom: 40px;
             right: 5px;
-            /* z-index: 50;
-            color: white;
-            font-size: 1.0em;
-            background: #14385c;
-            border-radius: 5px; */
-            /* text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; */
         }
         #basemapTrigger {
             position: absolute;
@@ -136,7 +130,6 @@
             padding-top: 6px;
             padding-bottom: 4px;
             margin: 0;
-            /*border-color: black;*/
         }
         #menuBtn {
             display: none;
@@ -212,6 +205,8 @@
         #signInButton {
             background-color: green;
         }
+
+        /* custom attribute inspector */
         span.dijit.dijitReset.dijitInline.dijitButton.atiButton.atiDeleteButton {
             margin: .2em;
             width: 50px;
@@ -219,6 +214,7 @@
         .dojoxGridContent {
             margin: auto;
         }
+        /* end custom attribute inspector */
         .helpButton {
             text-align: center;
             border: 1px solid #0649FB;
@@ -261,30 +257,29 @@
             filter: FlipH;
             -ms-filter: "FlipH";
         }
+        /* template picker */
         .templatePicker {
             font-size: .95em;
-            /* border: none !important; */
             padding-left: 7px !important;
-            /* -o-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -webkit-border-radius: 4px;
-            border-radius: 4px; */
-            /* width: 155px; */
         }
-        /* .templatePicker .grid .dojoxGridCell {
-            border: 1px solid #337ab7;
-            border-color: #337ab7; */
-            /* border-radius: 10px !important; */
-            /* outline: none; */
-        /* }
-        .templatePicker .grid .dojoxGridCellFocus {
-            border: 1px solid #337ab7 !important;
-        } */
+        .dojoxGridMasterView {
+            position: relative;
+        }
+        .dojoxGridScrollbox {
+            position: relative;
+            overflow: auto;
+            background-color: white;
+            width: 100%;
+        }
+        /* end template picker */
+
         .esriSimpleSliderTL {
             top: 20px !important;
             right: 20px !important;
             left: auto;
         }
+
+        /* measurement widget */
         #dijit_layout_ContentPane_1 {
             width: 251px;
         }
@@ -301,13 +296,15 @@
             background: #fff;
             text-align:center;
             height: 40px;
-            /* width: 163px; */
             padding-top: 7px;
             font-size: 1.1em;
         }
         #titlePane_titleBarNode:hover {
             background: #e6e6e6;
         }
+        /* end measurement widget */
+
+        /* log off button */
         #logoff > span.glyphicon.glyphicon-floppy-saved {
             display: none;
         }
@@ -321,21 +318,21 @@
         #logoff:hover {
             border-color: grey;
         }
+        /* end logoff button */
 
+        /* custom alerts */
         .swal-button {
             background-color: #b3b3b3;
         }
         .swal-button:not([disabled]):hover {
             background-color: #a6a6a6;
         }
+
         #legend {
             border: 1px solid #7EABCD;
             padding: 5px 10px;
             border-radius: 4px;
         }
-        /* #legend_msg {
-            display: none;
-        } */
         #editInfoBtn {
             width: auto;
         }
@@ -348,15 +345,6 @@
             font-size: 1.5em;
             text-align: center;
             color: inherit;
-        }
-        .dojoxGridMasterView {
-            position: relative;
-        }
-        .dojoxGridScrollbox {
-            position: relative;
-            overflow: auto;
-            background-color: white;
-            width: 100%;
         }
 
     </style>
@@ -462,7 +450,7 @@
                     var t = m.toString() + "/" + day.toString() + "/" + yr.toString();
                     parser.parse();
                     // config.defaults.io.proxyUrl = "http://localhost/proxy/proxy.ashx"; //mw
-                    // var geomServ = new GeometryService("http://txapp38/arcgis/rest/services/Utilities/Geometry/GeometryServer");//swamp thang
+                    // var geomServ = new GeometryService("http://txapp38/arcgis/rest/services/Utilities/Geometry/GeometryServer");
                     var geomServ = new GeometryService("https://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); //mw
                     var map = new Map("divMap", {
                         center: [-100, 32],
@@ -553,31 +541,27 @@
                     // });
 
                     ////CRI FEATURE LAYERS & EVENTS
-                    var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0"; //swamp thang
+                    var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0";
                     var counties = new FeatureLayer(countiesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         opacity: .5,
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0"; //2018 dev version
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev3/FeatureServer/0"; //testing merged service
-                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev3/FeatureServer/0"; //update to CountyRoads_Updates_2019
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
-                    // var crURL = "http://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads/FeatureServer/0";//swamp thang
-                    // var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //2017 version
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //2018 dev version
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //update to CountyRoads_DUSA_2019
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA/FeatureServer/0";
+                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA/FeatureServer/0"; //update to CountyRoads_RefLayer_2018
                     var edits_2018 = new FeatureLayer(edits_2018URL, {
                         id: "ED2018",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -587,20 +571,20 @@
                     });
 
                     ////LS FEATURE LAYERS & EVENTS
-                    var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0"; //swamp thang
+                    var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0";
                     var ls_maintenance = new FeatureLayer(ls_maintenanceURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         opacity: .5,
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var ls_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Updates/FeatureServer/0"; //swamp thang
+                    var ls_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Updates/FeatureServer/0";
                     var ls_updatesLyr = new FeatureLayer(ls_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
-                    var lsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_DUSA/FeatureServer/0"; //swamp thang
+                    var lsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_DUSA/FeatureServer/0";
                     var localstreets = new FeatureLayer(lsURL, {
                         id: "LS",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -700,7 +684,6 @@
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
                             edits_2018.setDefinitionExpression("SOURCE = '" + org + "'");
                             map.addLayers([counties, edits_2018, countyroads, cr_updatesLyr]);
-                            // map.removeLayer(edits_2018);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
@@ -961,25 +944,12 @@
                             respectCurrentMapScale: true
                         }, "legend");
                         legend.startup();
-                        // function displayLegend() {
-                        //     var mapZoom = map.getZoom();
-                        //     if (mapZoom <= 10) {
-                        //         dom.byId("legend").style.display = "none";
-                        //     }
-                        //     if (mapZoom > 11) {
-                        //         dom.byId("legend").style.display = "block";
-                        //     }
-                        // }
-                        // displayLegend();
                     }
                     function initTemplates(templateLayers) {
                         var tpCustom = new TemplatePicker({
                             featureLayers: templateLayers,
                             grouping: false,
                             columns: 4,
-                            // rows: 2,
-                            // showTooltip: true,
-                            // useLegend: true,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
                         tpCustom.startup();
@@ -1016,14 +986,12 @@
                                 "LENGTH": rounder,
                                 "UPDATE_DT": t,
                             });
-                            console.log(autoAttributes);
                             // Autopopulate REMOVE operation with default values
                             if (autoAttributes.CHANGE == "2") {
                                 autoAttributes.DESIGN = 2;
                                 autoAttributes.NUM_LANES = 2;
                                 autoAttributes.SURFACE = 10;
                             }
-
                             // Show infoWindow when drawing is complete
                             var newGraphic = new Graphic(evt.geometry, null, autoAttributes);
                             var scrnPt = new Point (newGraphic.geometry.paths[0][0][0],newGraphic.geometry.paths[0][0][1], newGraphic.geometry.spatialReference);
@@ -1048,8 +1016,6 @@
                                 }
                             });
                             tpCustom.clearSelection();
-
-
                         });
                         $('#collapseOne').removeClass('in');
                         $('#collapseOneHdr').addClass('collapsed');
@@ -1105,7 +1071,6 @@
                             }
                         });
                     }
-
                     // FUNCTION TO DYNAMICALLY SET TITLEBUTTON OF ATTRIBUTE INSPECTOR BASED ON INVENTORY TYPE
                     function setTitleBtn(titleButton,theTitle) {
                         var i;
@@ -1168,7 +1133,7 @@
                                 });
                             }
                             else {
-                                var features = refLayers[0].getSelectedFeatures();//issue is this function call (no features are selected yet)
+                                var features = refLayers[0].getSelectedFeatures();
                                 var feature = features[0];
                                 map.infoWindow.hide();
                                 activateToolbar(feature);
@@ -1191,7 +1156,7 @@
                             refLayers[1].clearSelection();
                         });
                     }
-
+                    // Check for blank or null values and prevent posting edit
                     function getAlertList() {
                         var fieldList = [];
                         var alertList = [];
@@ -1247,6 +1212,7 @@
                             allowDeleteVertices: true,
                             ghostLineSymbol: ghostLine
                         };
+                        // prevent editing geometry if missing any required attributes
                         if (graphic==undefined) {
                             swal({
                                 text: "Please Re-Select Line to Edit Geometry",
@@ -1356,7 +1322,7 @@
                             'callback.html': 'textarea'
                         };
                         //use the rest generate operation to generate a feature collection from the zipped shapefile
-                        var portalUrl = "https://www.arcgis.com"; //swamp thang
+                        var portalUrl = "https://www.arcgis.com";
                         request({
                             url: portalUrl + '/sharing/rest/content/features/generate',
                             content: myContent,
@@ -1385,7 +1351,7 @@
                         console.log(error);
                     }
                     function verifySchema(featureCollection) {
-                        var templateFields = ['CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES']; //no need to check source and length fields for nulls
+                        var templateFields = ['CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES']; //check if these fields are present and NOT null or blank
                         var fieldFlag = false;
                         var attFlag = false;
                         var badField;
@@ -1405,7 +1371,7 @@
                                 surfList.push(surfField);
                                 numLnList.push(numLnField);
                                 array.forEach(templateFields, function(field) {
-                                    console.log("checking for nulls");
+                                    console.log("checking for NULLS");
                                     if (field in feature.attributes) {
                                         var att = feature.attributes[field];
                                         if (att == undefined || att == null || att == " " || att == "") { //check to make sure no blank/null values
@@ -1419,9 +1385,10 @@
                                 });
                             });
                         });
+                        // recreate schema of CountyRoads_DUSA gdb
                         for (var i=0; i<changeList.length;i++) {
-                            console.log("checking for bad change values");
-                            changeList[i] = parseInt(changeList[i],10);                                                    //WORKS!
+                            console.log("checking for bad CHANGE values");
+                            changeList[i] = parseInt(changeList[i],10);
                             if (isNaN(changeList[i]) || changeList[i] ==0 || changeList[i] >4) { //check to make sure CHANGE values only 1-4, no text
                                 // attFlag = true;
                                 badField = "CHANGE";
@@ -1431,7 +1398,7 @@
                         };
                         for (var i=0; i<designList.length;i++) {
                             console.log("checking for bad design values");
-                            designList[i] = parseInt(designList[i],10);                                                    //WORKS!
+                            designList[i] = parseInt(designList[i],10);
                             if (isNaN(designList[i]) || designList[i] ==0 || designList[i] >3) { //check to make sure DESIGN values only 1-3, no text
                                 // attFlag = true;
                                 badField = "DESIGN";
@@ -1441,7 +1408,7 @@
                         };
                         for (var i=0; i<surfList.length;i++) {
                             console.log("checking for bad surface values");
-                            surfList[i] = parseInt(surfList[i],10);                                                         //WORKS!
+                            surfList[i] = parseInt(surfList[i],10);
                             if (isNaN(surfList[i]) || surfList==0 ||(surfList[i] >2 && surfList[i] <10) || surfList[i] >13) { //check to make sure SURFACE values only 2 or 10,11,12,13,no text
                                 // attFlag = true;
                                 badField = "SURFACE";
