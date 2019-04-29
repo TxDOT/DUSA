@@ -1747,15 +1747,6 @@
                                 // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                 console.log("Success!");
                                 checkStorage();
-                                // if (localStorage.getItem("noDisplay") !== null) {
-                                //         $('#aboutModal').modal("hide");
-                                //         $('#noDisplay').hide();
-                                //     }
-                                // else {
-                                //     $('#aboutModal').modal("show");
-                                //     $('#noDisplay').show();
-                                // }
-
                             }
                             else {
                                 var TXDOT_login = AGO_user.match(/^.*TXDOT.*$/);
@@ -1767,16 +1758,6 @@
                                     // $("#user").html($("#selectOrg option[value='" + org + "']").text());
                                     console.log("TXDOT Match!");
                                     checkStorage();
-                                    // if (localStorage.getItem("noDisplay") !== null) {
-                                    //         $('#aboutModal').modal("hide");
-                                    //         $('#noDisplay').hide();
-                                    //     }
-                                    // else {
-                                    //     $('#aboutModal').modal("show");
-                                    //     $('#noDisplay').show();
-                                    // }
-
-
                                 }
                                 else {
                                     if(confirm("Oops! You selected " + first + " County. \nPlease select "+ AGO_user + " County to make edits. \nPress 'OK' to select "+ AGO_user +" County or 'CANCEL' to log out.")){
