@@ -548,20 +548,20 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev3/FeatureServer/0"; //update to CountyRoads_Updates_2019
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/ArcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //update to CountyRoads_DUSA_2019
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0";
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA/FeatureServer/0"; //update to CountyRoads_RefLayer_2018
+                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_RefLayer_2018/FeatureServer/0";
                     var edits_2018 = new FeatureLayer(edits_2018URL, {
                         id: "ED2018",
                         mode: FeatureLayer.MODE_ONDEMAND,
