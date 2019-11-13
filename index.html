@@ -65,12 +65,6 @@
             position: absolute;
             bottom: 40px;
             right: 5px;
-            /* z-index: 50;
-            color: white;
-            font-size: 1.0em;
-            background: #14385c;
-            border-radius: 5px; */
-            /* text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white; */
         }
         #basemapTrigger {
             position: absolute;
@@ -136,7 +130,6 @@
             padding-top: 6px;
             padding-bottom: 4px;
             margin: 0;
-            /*border-color: black;*/
         }
         #menuBtn {
             display: none;
@@ -155,7 +148,7 @@
             position: absolute;
             top: 30px;
             left: 15px;
-            z-index: 50;
+            z-index: 60;
             padding: 0;
             margin: 0;
             width: 340px;
@@ -212,6 +205,8 @@
         #signInButton {
             background-color: green;
         }
+
+        /* custom attribute inspector */
         span.dijit.dijitReset.dijitInline.dijitButton.atiButton.atiDeleteButton {
             margin: .2em;
             width: 50px;
@@ -219,6 +214,7 @@
         .dojoxGridContent {
             margin: auto;
         }
+        /* end custom attribute inspector */
         .helpButton {
             text-align: center;
             border: 1px solid #0649FB;
@@ -261,30 +257,29 @@
             filter: FlipH;
             -ms-filter: "FlipH";
         }
+        /* template picker */
         .templatePicker {
             font-size: .95em;
-            /* border: none !important; */
             padding-left: 7px !important;
-            /* -o-border-radius: 4px;
-            -moz-border-radius: 4px;
-            -webkit-border-radius: 4px;
-            border-radius: 4px; */
-            /* width: 155px; */
         }
-        /* .templatePicker .grid .dojoxGridCell {
-            border: 1px solid #337ab7;
-            border-color: #337ab7; */
-            /* border-radius: 10px !important; */
-            /* outline: none; */
-        /* }
-        .templatePicker .grid .dojoxGridCellFocus {
-            border: 1px solid #337ab7 !important;
-        } */
+        .dojoxGridMasterView {
+            position: relative;
+        }
+        .dojoxGridScrollbox {
+            position: relative;
+            overflow: auto;
+            background-color: white;
+            width: 100%;
+        }
+        /* end template picker */
+
         .esriSimpleSliderTL {
             top: 20px !important;
             right: 20px !important;
             left: auto;
         }
+
+        /* measurement widget */
         #dijit_layout_ContentPane_1 {
             width: 251px;
         }
@@ -301,13 +296,15 @@
             background: #fff;
             text-align:center;
             height: 40px;
-            /* width: 163px; */
             padding-top: 7px;
             font-size: 1.1em;
         }
         #titlePane_titleBarNode:hover {
             background: #e6e6e6;
         }
+        /* end measurement widget */
+
+        /* log off button */
         #logoff > span.glyphicon.glyphicon-floppy-saved {
             display: none;
         }
@@ -321,21 +318,21 @@
         #logoff:hover {
             border-color: grey;
         }
+        /* end logoff button */
 
+        /* custom alerts */
         .swal-button {
             background-color: #b3b3b3;
         }
         .swal-button:not([disabled]):hover {
             background-color: #a6a6a6;
         }
+
         #legend {
             border: 1px solid #7EABCD;
             padding: 5px 10px;
             border-radius: 4px;
         }
-        /* #legend_msg {
-            display: none;
-        } */
         #editInfoBtn {
             width: auto;
         }
@@ -348,15 +345,6 @@
             font-size: 1.5em;
             text-align: center;
             color: inherit;
-        }
-        .dojoxGridMasterView {
-            position: relative;
-        }
-        .dojoxGridScrollbox {
-            position: relative;
-            overflow: auto;
-            background-color: white;
-            width: 100%;
         }
 
     </style>
@@ -462,7 +450,7 @@
                     var t = m.toString() + "/" + day.toString() + "/" + yr.toString();
                     parser.parse();
                     // config.defaults.io.proxyUrl = "http://localhost/proxy/proxy.ashx"; //mw
-                    // var geomServ = new GeometryService("http://txapp38/arcgis/rest/services/Utilities/Geometry/GeometryServer");//swamp thang
+                    // var geomServ = new GeometryService("http://txapp38/arcgis/rest/services/Utilities/Geometry/GeometryServer");
                     var geomServ = new GeometryService("https://tasks.arcgisonline.com/ArcGIS/rest/services/Geometry/GeometryServer"); //mw
                     var map = new Map("divMap", {
                         center: [-100, 32],
@@ -490,7 +478,7 @@
         	        };
 
         			// Add Google Imagery WMTS layer
-        	        var google = new WMTSLayer("https://txgi.tnris.org/login/path/pegasus-horizon-castro-comrade/wmts", GoogleLayerOptions);
+        	        var google = new WMTSLayer("https://txgi.tnris.org/login/path/right-address-virus-dilemma/wmts", GoogleLayerOptions);
         	        google.id = "googleLayer";
 
                     // Add TxDOT Planning Vector Tile Layer
@@ -553,32 +541,29 @@
                     // });
 
                     ////CRI FEATURE LAYERS & EVENTS
-                    var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0"; //swamp thang
+                    var countiesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Poly/FeatureServer/0";
                     var counties = new FeatureLayer(countiesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         opacity: .5,
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates_dev/FeatureServer/0";
-                    // var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_Updates/FeatureServer/0"; //swamp thang
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/ArcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
-                    // var crURL = "http://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads/FeatureServer/0";//swamp thang
-                    // var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0"; //2017 version
-                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA_dev/FeatureServer/0"; //2018 dev version
+                    var crURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_DUSA/FeatureServer/0";
                     var countyroads = new FeatureLayer(crURL, {
                         id: "CR",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/RefLayer_2018_DUSA_dev/FeatureServer/0"; //2018 dev version
-                    var edits_2018 = new FeatureLayer(edits_2018URL, {
-                        id: "ED2018",
+                    var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_View/FeatureServer/0";
+                    var edits_2019 = new FeatureLayer(edits_2019URL, {
+                        id: "ED2019",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         visible: false,
@@ -586,20 +571,20 @@
                     });
 
                     ////LS FEATURE LAYERS & EVENTS
-                    var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0"; //swamp thang
+                    var ls_maintenanceURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Poly/FeatureServer/0";
                     var ls_maintenance = new FeatureLayer(ls_maintenanceURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         opacity: .5,
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var ls_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Updates/FeatureServer/0"; //swamp thang
+                    var ls_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_Updates/FeatureServer/0";
                     var ls_updatesLyr = new FeatureLayer(ls_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
                         outFields: ['*']
                     });
-                    var lsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_DUSA/FeatureServer/0"; //swamp thang
+                    var lsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/LocalStreets_DUSA/FeatureServer/0";
                     var localstreets = new FeatureLayer(lsURL, {
                         id: "LS",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -697,15 +682,15 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            edits_2018.setDefinitionExpression("SOURCE = '" + org + "'");
-                            map.addLayers([counties, edits_2018, countyroads, cr_updatesLyr]);
-                            // map.removeLayer(edits_2018);
+                            edits_2019.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
+                            map.addLayers([counties, edits_2019, countyroads, cr_updatesLyr]); 
+                            //map.addLayers([counties, edits_2019, countyroads]);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
                             var caps = theName.toUpperCase();
                             $("#resources").append(
-                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='javascript:void(0)'data-toggle='modal' data-target='#aboutModal' title='About DUSA'>About</a>"
+                                "<a>&bull; </a><a href='./resources/ApplicationInstructions.pdf' target='Instructions' title='How to Use This Application'>Instructions</a><br><a>&bull; </a><a href='./DUSA_videos.html' target='Training Videos' title='Training Videos for DUSA'>Training Videos</a><br><a>&bull; </a><a href='./resources/DataDictionary.pdf' target='DataDictionary' title='Schema Data Dictionary for all Datasets within this App'>Data Dictionary</a><br><a>&bull; </a><a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road'>Criteria</a><br><a>&bull; </a><a href='#'data-toggle='modal'data-target='#aboutModal' title='About DUSA'>About</a>"
                             );
                             // <br><a>&bull; </a><a href='ftp://ftp.dot.state.tx.us/pub/txdot-info/tpp/countyfiles/2016/" + caps + "_2016.zip' id='FTPlink' target='Download' title='Download CRI Zipfile Packet for Selected County'>Download Packet</a>"); -mw
                             var queryTask = new QueryTask(countiesURL);
@@ -717,9 +702,9 @@
                                 defaultSymbol: false,
                                 title: "Surface Type"
                             }, {
-                                layer: edits_2018,
+                                layer: edits_2019,
                                 defaultSymbol: false,
-                                title: "2018 Markup"
+                                title: "2019 Markup"
                             },
                             {
                                 layer: counties,
@@ -728,7 +713,7 @@
                             }
                         ];
                             templateLayers = [cr_updatesLyr];
-                            refLayers = [cr_updatesLyr, countyroads, edits_2018];
+                            refLayers = [cr_updatesLyr, countyroads, edits_2019];
                             serviceURL = cr_updatesURL;
                             editorInfos = [{
                                 'featureLayer': cr_updatesLyr,
@@ -792,7 +777,7 @@
                                     'label': "Number of Lanes"
                                 }]
                             }, {
-                                'featureLayer': edits_2018,
+                                'featureLayer': edits_2019,
                                 'showAttachments': false,
                                 'isEditable': false,
                                 'fieldInfos': [{
@@ -960,24 +945,12 @@
                             respectCurrentMapScale: true
                         }, "legend");
                         legend.startup();
-                        // function displayLegend() {
-                        //     var mapZoom = map.getZoom();
-                        //     if (mapZoom <= 10) {
-                        //         dom.byId("legend").style.display = "none";
-                        //     }
-                        //     if (mapZoom > 11) {
-                        //         dom.byId("legend").style.display = "block";
-                        //     }
-                        // }
-                        // displayLegend();
                     }
                     function initTemplates(templateLayers) {
                         var tpCustom = new TemplatePicker({
                             featureLayers: templateLayers,
                             grouping: false,
                             columns: 4,
-                            // rows: 2,
-                            // showTooltip: true,
                             emptyMessage: "Nothing to edit"
                         }, "editTemplate");
                         tpCustom.startup();
@@ -1014,14 +987,12 @@
                                 "LENGTH": rounder,
                                 "UPDATE_DT": t,
                             });
-
                             // Autopopulate REMOVE operation with default values
-                            if (autoAttributes.CHANGE == "Remove EXISTING Road") {
+                            if (autoAttributes.CHANGE == "2") {
                                 autoAttributes.DESIGN = 2;
                                 autoAttributes.NUM_LANES = 2;
                                 autoAttributes.SURFACE = 10;
                             }
-
                             // Show infoWindow when drawing is complete
                             var newGraphic = new Graphic(evt.geometry, null, autoAttributes);
                             var scrnPt = new Point (newGraphic.geometry.paths[0][0][0],newGraphic.geometry.paths[0][0][1], newGraphic.geometry.spatialReference);
@@ -1037,7 +1008,7 @@
                                 var titleButton = document.getElementsByClassName("titleButton");
                                 setTitleBtn(titleButton,theTitle);
                                 map.infoWindow.show(scrnPt, map.getInfoWindowAnchor(scrnPt));
-                                if (operation === "Update Attributes Only") {
+                                if (operation == "3") {
                                     dom.byId("dijit_form_Button_5").parentElement.style.display = "block";
                                     dom.byId("dijit_form_Button_6").parentElement.style.display = "none";
                                 }
@@ -1046,8 +1017,6 @@
                                 }
                             });
                             tpCustom.clearSelection();
-
-
                         });
                         $('#collapseOne').removeClass('in');
                         $('#collapseOneHdr').addClass('collapsed');
@@ -1103,7 +1072,6 @@
                             }
                         });
                     }
-
                     // FUNCTION TO DYNAMICALLY SET TITLEBUTTON OF ATTRIBUTE INSPECTOR BASED ON INVENTORY TYPE
                     function setTitleBtn(titleButton,theTitle) {
                         var i;
@@ -1166,7 +1134,7 @@
                                 });
                             }
                             else {
-                                var features = refLayers[0].getSelectedFeatures();//issue is this function call (no features are selected yet)
+                                var features = refLayers[0].getSelectedFeatures();
                                 var feature = features[0];
                                 map.infoWindow.hide();
                                 activateToolbar(feature);
@@ -1189,7 +1157,7 @@
                             refLayers[1].clearSelection();
                         });
                     }
-
+                    // Check for blank or null values and prevent posting edit
                     function getAlertList() {
                         var fieldList = [];
                         var alertList = [];
@@ -1245,6 +1213,7 @@
                             allowDeleteVertices: true,
                             ghostLineSymbol: ghostLine
                         };
+                        // prevent editing geometry if missing any required attributes
                         if (graphic==undefined) {
                             swal({
                                 text: "Please Re-Select Line to Edit Geometry",
@@ -1321,7 +1290,7 @@
                         var params = {
                             'name': name,
                             'targetSR': map.spatialReference,
-                            'maxRecordCount': 1000,
+                            'maxRecordCount': 2000,
                             'enforceInputFileSizeLimit': true,
                             'enforceOutputJsonSizeLimit': true,
                             'layerInfo': {
@@ -1330,7 +1299,7 @@
                                         'type': 'simple',
                                         'symbol': {
                                             'color': [145,145,255,255],
-                                            'width': 3,
+                                            'width': 4.5,
                                             'type': 'esriSLS',
                                             'style': 'esriSLSSolid'
                                         }
@@ -1354,7 +1323,7 @@
                             'callback.html': 'textarea'
                         };
                         //use the rest generate operation to generate a feature collection from the zipped shapefile
-                        var portalUrl = "https://www.arcgis.com"; //swamp thang
+                        var portalUrl = "https://www.arcgis.com";
                         request({
                             url: portalUrl + '/sharing/rest/content/features/generate',
                             content: myContent,
@@ -1383,36 +1352,129 @@
                         console.log(error);
                     }
                     function verifySchema(featureCollection) {
-                        var templateFields = ['SOURCE', 'UPDATE_DT', 'LENGTH', 'CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES', 'COMMENT'];
+                        var templateFields = ['CHANGE', 'STREET_NM', 'DESIGN', 'SURFACE', 'NUM_LANES']; //check if these fields are present and NOT null or blank
                         var fieldFlag = false;
                         var attFlag = false;
                         var badField;
+                        var changeList = [];
+                        var designList = [];
+                        var surfList = [];
+                        var numLnList = [];
+                        var errorList = [];
                         array.forEach(featureCollection.layers, function(layer) {
                             array.forEach(layer.featureSet.features, function(feature) {
+                                var changeField = feature.attributes.CHANGE;
+                                var designField = feature.attributes.DESIGN;
+                                var surfField = feature.attributes.SURFACE;
+                                var numLnField = feature.attributes.NUM_LANES;
+                                changeList.push(changeField);
+                                designList.push(designField);
+                                surfList.push(surfField);
+                                numLnList.push(numLnField);
                                 array.forEach(templateFields, function(field) {
+                                    console.log("checking for NULLS");
                                     if (field in feature.attributes) {
                                         var att = feature.attributes[field];
-                                        if (att == undefined || att == null || att == " " || att == "") {
-                                            // attFlag = true;
-                                            // badField = field;
-                                            feature.attributes[field] = 0;
+                                        if (att == undefined || att == null || att == " " || att == "") { //check to make sure no blank/null values
+                                            attFlag = true;
+                                            badField = field;
                                         }
-                                    } else {
+                                    }
+                                    else {
                                         fieldFlag = true;
                                     }
                                 });
                             });
                         });
+
+                        // recreate schema of CountyRoads_DUSA gdb
+
+                        console.log("Checking for bad CHANGE values");
+                        for (var i=0; i<changeList.length;i++) {
+                            // console.log("Checking for bad CHANGE values");
+                            changeList[i] = parseInt(changeList[i],10);
+                            if (isNaN(changeList[i]) || changeList[i] ==0 || changeList[i] >4) { //check to make sure CHANGE values only 1-4, no text
+                                // attFlag = true;
+                                badField = "CHANGE";
+                                errorList.push(badField);
+                                console.log(changeList[i]);
+                            }
+                        };
+                        console.log("Checking for bad DESIGN values");
+                        for (var i=0; i<designList.length;i++) {
+                            // console.log("Checking for bad DESIGN values");
+                            designList[i] = parseInt(designList[i],10);
+                            if (isNaN(designList[i]) || designList[i] ==0 || designList[i] >3) { //check to make sure DESIGN values only 1-3, no text
+                                // attFlag = true;
+                                badField = "DESIGN";
+                                errorList.push(badField);
+                                console.log(designList[i]);
+                            }
+                        };
+                        console.log("Checking for bad SURFACE values");
+                        for (var i=0; i<surfList.length;i++) {
+                            // console.log("checking for bad SURFACE values");
+                            surfList[i] = parseInt(surfList[i],10);
+                            if (isNaN(surfList[i]) || surfList==0 ||(surfList[i] >2 && surfList[i] <10) || surfList[i] >13) { //check to make sure SURFACE values only 2 or 10,11,12,13,no text
+                                // attFlag = true;
+                                badField = "SURFACE";
+                                errorList.push(badField);
+                                console.log(surfList[i]);
+                            }
+                        };
+                        console.log("Checking for bad NUM_LANES values");
+                        for (var i=0; i<numLnList.length;i++) {
+                            // console.log("checking for bad NUM_LANES values");
+                            numLnList[i] = parseInt(numLnList[i],10);                                                        //WORKS!
+                            if (isNaN(numLnList[i]) || numLnList[i] ==0 || numLnList[i] >6) { //check to make sure CHANGE values only 1-6, no text
+                                // attFlag = true;
+                                badField = "NUM_LANES";
+                                errorList.push(badField);
+                                console.log(numLnList[i]);
+                            }
+                        };
+                        if (errorList.length>0) {
+                            attFlag = true;
+                            userNotify = [];
+                            if (errorList.includes("CHANGE")){
+                                userNotify.push("CHANGE ");
+                            }
+                            if (errorList.includes("DESIGN")){
+                                userNotify.push("DESIGN ");
+                            }
+                            if (errorList.includes("SURFACE")){
+                                userNotify.push("SURFACE ");
+                            }
+                            if (errorList.includes("NUM_LANES")){
+                                userNotify.push("NUM_LANES");
+                            }
+                            badField = userNotify.join("\n");
+                            var badFieldAlt = userNotify.join(", ");
+                            var numErrors = errorList.length;
+                        }
+
                         if (fieldFlag) {
-                            alert("Shapefile does not contain all required fields.");
-                            dom.byId('uploadMarquee').innerHTML =
-                                '<p style="color:red">Shapefile does not contain all required fields.<br><p style="font-size: xx-small;">Updates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.</p></p>';
-                        } else {
+                            swal({
+                                title: "Oops!",
+                                text: "The uploaded shapefile does not contain all the required fields.\n\nUpdates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.",
+                                icon: "error",
+                                closeOnClickOutside: false,
+                            });
+                            // dom.byId('uploadMarquee').innerHTML =
+                            //     '<p style="color:red">Shapefile does not contain all required fields.<br><p style="font-size: xx-small;">Updates can only be uploaded via the schema template shapefile acquired from the Download section of this menu.</p></p>';
+                        }
+                        else {
                             if (attFlag) {
-                                alert(badField + " has a NULL or blank value which must be populated.");
-                                dom.byId('uploadMarquee').innerHTML = '<p style="color:red">' + badField + " has a NULL or blank value which must be populated." + '</p>';
-                            } else {
-                                dom.byId('uploadMarquee').innerHTML = '<p style="color:green">Submited shapefile has passed field requirement checks.</p>';
+                                swal({
+                                    title: "Oops!",
+                                    text: "The following fields have blank, NULL, or improperly formatted values: \n\n"+badField,
+                                    icon: "error",
+                                    closeOnClickOutside: false,
+                                });
+                                dom.byId('uploadMarquee').innerHTML = '<p style="color:red">' + "The following fields have blank, NULL, or improperly formatted values: "+'<br><strong>'+badFieldAlt+'</strong></p>';
+                            }
+                            else {
+                                // dom.byId('uploadMarquee').innerHTML = '<p style="color:green">Submited shapefile has passed field requirement checks.</p>';
                                 addShapefileToMap(featureCollection);
                                 serviceLoad(featureCollection);
                             }
@@ -1470,9 +1532,9 @@
                                 var lengther = geodesicUtils.geodesicLengths([fixed], Units.MILES);
                                 var rounder = parseFloat(lengther).toFixed(3);
                                 var att = feature.attributes.CHANGE;
-                                if (att == 0) {
-                                    att = "Update";
-                                }
+                                // if (att == 0) {
+                                //     att = "Update";
+                                // }
                                 theText = "{'geometry':{'paths':" + paths + "},'attributes':{'SOURCE':'" + org + "','UPDATE_DT':'" + t.toString() + "','LENGTH':" + rounder.toString() + ",'CHANGE':'" + att +
                                     "','STREET_NM':'" + feature.attributes.STREET_NM + "','DESIGN':'" + feature.attributes.DESIGN + "','SURFACE':'" + feature.attributes.SURFACE + "','NUM_LANES':" + feature.attributes.NUM_LANES +
                                     ",'COMMENT':'" + feature.attributes.COMMENT + "'}}";
@@ -1487,7 +1549,14 @@
                                         counter += 1;
                                         dom.byId('uploadMarquee').innerHTML = '<p style="color:green">' + counter.toString() + ' of ' + total.toString() + ' records uploaded to service.</p>';
                                         if (counter === total) {
-                                            dom.byId('uploadMarquee').innerHTML = '<p style="color:green">All records uploaded to service.</p>';
+                                            swal({
+                                                title: "Success!",
+                                                text: "All records uploaded to TxDOT",
+                                                icon: "success",
+                                                buttons: false,
+                                                timer: 4000
+                                            });
+                                            dom.byId('uploadMarquee').innerHTML = '<p style="color:green">All records uploaded to TxDOT.</p>';
                                             array.forEach(uploadedLayers, function(lyr) {
                                                 map.removeLayer(lyr);
                                             });
@@ -1508,21 +1577,21 @@
                         displayLayers = [];
                         $("#clearDisplay").attr("style", "display:none;");
                     }
+
                     ////JQUERY EVENTS
 
-                    // toggle edits option (comment to disable)
                     $("#layerToggle").click(function() {
                         if (!editView) {
-                            // map.addLayer(edits_2018);
-                            edits_2018.show();
-                            $("#layerToggle").html("Hide 2018 Markup");
+                            // map.addLayer(edits_2019);
+                            edits_2019.show();
+                            $("#layerToggle").html("Hide 2019 Markup");
                             editView = true;
                         }
                         else {
                             editView = false;
-                            // map.removeLayer(edits_2018);
-                            edits_2018.hide();
-                            $("#layerToggle").html("View 2018 Markup");
+                            // map.removeLayer(edits_2019);
+                            edits_2019.hide();
+                            $("#layerToggle").html("View 2019 Markup");
                         }
                     });
                     $("#needHelp").click(function() {
@@ -1677,7 +1746,8 @@
                                 dom.byId("user").innerHTML = countyName;
                                 // $("#user").html.(AGO_user);
                                 // $("#user").html($("#selectOrg option[value='" + org + "']").text());
-                                console.log("Success!")
+                                console.log("Success!");
+                                checkStorage();
                             }
                             else {
                                 var TXDOT_login = AGO_user.match(/^.*TXDOT.*$/);
@@ -1687,7 +1757,8 @@
                                     dom.byId("user").innerHTML = countyName;
                                     // $("#user").html.(AGO_user);
                                     // $("#user").html($("#selectOrg option[value='" + org + "']").text());
-                                    console.log("TXDOT Match!")
+                                    console.log("TXDOT Match!");
+                                    checkStorage();
                                 }
                                 else {
                                     if(confirm("Oops! You selected " + first + " County. \nPlease select "+ AGO_user + " County to make edits. \nPress 'OK' to select "+ AGO_user +" County or 'CANCEL' to log out.")){
@@ -1750,6 +1821,19 @@
                     }();
                 });
             });
+            function noDisplay() {
+                localStorage.setItem("noDisplay","hidden!");
+            }
+            function checkStorage() {
+                if (localStorage.getItem("noDisplay") !== null) {
+                        $('#aboutModal').modal("hide");
+                        // $('#noDisplay').hide();
+                    }
+                else {
+                    $('#aboutModal').modal("show");
+                    $('#noDisplay').show();
+                }
+            }
     </script>
 </head>
 
@@ -1832,8 +1916,8 @@
                                     </a>
                                     <br>
                                     <div>
-                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Markup">View 2018 Markup</button>
-                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2018 Markup" data-toggle='modal' data-target='#editInfoModal'>
+                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2019 Markup">View 2019 Markup</button>
+                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2019 Markup" data-toggle='modal' data-target='#editInfoModal'>
                                             <span class="glyphicon glyphicon-question-sign">
                                             </span>
                                         </button>
@@ -1903,10 +1987,14 @@
                                         </button>
                                     </a><br><br>
                                     <p style="text-align:left;">1. Empty schema template shapefile<br>2. Copy of road inventory</p>
-                                    <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p>
+                                    <!-- <p style="font-size: xx-small;">Note: Downloading the inventory in the Shapefile format may truncate field names.</p> -->
+                                    <br>
+                                    <p style="font-size:small;">What Do You Want to Download?</p>
                                     <select class="form-control" id="chooseData">
                                         <option value="SCHEMA" selected>Schema Template</option> <option value="DATA">Road Inventory</option>
                                     </select>
+                                    <br>
+                                    <p style="font-size:small;">Download Format</p>
                                     <select class="form-control" id="downloadFormat"  disabled="disabled">
                                         <option value="SHP" selected>Shapefile</option>  <option value="FGDB">File Geodatabase</option>
                                         <option value="CSV">Table</option>
@@ -2030,6 +2118,9 @@
                     <li><strong>Save and Log Out</strong>
                       <p>A new button that helps clarify that all user edits have been successfully saved, and securely logs user out</p>
                     </li>
+                    <li><strong>Improved Upload Functionality</strong>
+                      <p>The OPTIONAL Bulk Upload process now provides built-in error checks and user feedback to ensure that uploaded shapefiles contain all the required fields, values, etc.</p>
+                    </li>
                     <li><strong>Measure Tool</strong>
                       <p>A measure tool was added to help measure the distance along roads, as well as area and lat/lon positions</p>
                     </li>
@@ -2039,8 +2130,8 @@
                     <li><strong>Jump to Google</strong>
                       <p>A button that opens a new browser tab in Google Maps centered at the current location in DUSA. Useful for examining roads with Street View</p>
                     </li>
-                    <li><strong>2018 Reference Layer</strong>
-                      <p>A new ‘reference layer’ was added, which shows the markups submitted in 2018
+                    <li><strong>2019 Reference Layer</strong>
+                      <p>A new ‘reference layer’ was added, which shows the markups submitted in 2019
                           that <i>did not</i> meet the criteria for a county road, or were not updated for another reason</p>
                     </li>
                 </ul>
@@ -2049,6 +2140,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
               </div>
             </div>
           </div>
@@ -2062,11 +2154,11 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="editInfoModalLabel">2018 Markup Information</h3>
+                  <h3 class="modal-title" id="editInfoModalLabel">2019 Markup Information</h3>
               </div>
               <div class="modal-body">
-                <h4>About 2018 Markups that did not meet criteria</h4>
-                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                <h4>About 2019 Markups that did not meet criteria</h4>
+                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
                         or were not updated for another reason. Possible reasons include: </p><br>
                         <ul>
                             <li><strong>City Limit Interaction</strong>
