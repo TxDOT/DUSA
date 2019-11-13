@@ -683,7 +683,7 @@
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
                             edits_2019.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
-                            map.addLayers([counties, edits_2019, countyroads, cr_updatesLyr]); 
+                            map.addLayers([counties, edits_2019, countyroads, cr_updatesLyr]);
                             //map.addLayers([counties, edits_2019, countyroads]);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
@@ -1826,11 +1826,13 @@
             }
             function checkStorage() {
                 if (localStorage.getItem("noDisplay") !== null) {
-                        $('#aboutModal').modal("hide");
+                        // $('#aboutModal').modal("hide");
+                        $('#editInfoModal').modal("hide");
                         // $('#noDisplay').hide();
                     }
                 else {
-                    $('#aboutModal').modal("show");
+                    //$('#aboutModal').modal("show");
+                    $('#editInfoModal').modal("show");
                     $('#noDisplay').show();
                 }
             }
@@ -2140,7 +2142,7 @@
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
-                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
+                <!-- <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button> -->
               </div>
             </div>
           </div>
@@ -2157,10 +2159,13 @@
                   <h3 class="modal-title" id="editInfoModalLabel">2019 Markup Information</h3>
               </div>
               <div class="modal-body">
-                <h4>About 2019 Markups that did not meet criteria</h4>
-                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
-                        or were not updated for another reason. Possible reasons include: </p><br>
-                        <ul>
+                <!-- <h4>About 2019 Markups that did not meet criteria</h4> -->
+                    <!-- <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                        or were not updated for another reason. Possible reasons include: </p><br> -->
+                    <p>A ‘reference layer’ was added to show the markups that were submitted by August 31, 2019.
+                        As TxDOT updates these to our inventory, they will disappear from this reference layer
+                        and appear in the county road base layer.</p><br>
+                        <!-- <ul>
                             <li><strong>City Limit Interaction</strong>
                                 <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
                                 Until we are able to update a city boundary, we cannot update the affected county roads and city streets.</p>
@@ -2174,16 +2179,16 @@
                             <li><strong>Markup Unclear</strong>
                             </li><br>
                             <li><strong>Other Reason</strong></li><br>
-                        </ul>
+                        </ul> -->
                         <h4>Questions?</h4>
                         <div>
                             Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at
                             <a href="mailto:TPP-GIS@txdot.gov?Subject=CRI%20DUSA%20Question" target="_top" style="color:blue;">TPP-GIS@txdot.gov</a></p>
                         </div>
-
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
               </div>
             </div>
           </div>
