@@ -548,7 +548,7 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/ArcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
@@ -2101,7 +2101,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.3.0)</h3>
+                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.4.0)</h3>
               </div>
               <div class="modal-body">
                 <h4>Release notes:</h4>
@@ -2132,10 +2132,7 @@
                     <li><strong>Jump to Google</strong>
                       <p>A button that opens a new browser tab in Google Maps centered at the current location in DUSA. Useful for examining roads with Street View</p>
                     </li>
-                    <li><strong>2019 Reference Layer</strong>
-                      <p>A new ‘reference layer’ was added, which shows the markups submitted in 2019
-                          that <i>did not</i> meet the criteria for a county road, or were not updated for another reason</p>
-                    </li>
+                    
                 </ul>
 
 
@@ -2162,9 +2159,16 @@
                 <!-- <h4>About 2019 Markups that did not meet criteria</h4> -->
                     <!-- <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
                         or were not updated for another reason. Possible reasons include: </p><br> -->
-                    <p>A ‘reference layer’ was added to show the markups that were submitted by August 31, 2019.
-                        As TxDOT updates these to our inventory, they will disappear from this reference layer
+                    <p>A 'Reference Layer' was added to show the markups that were submitted by August 31, 2019.
+                        As TxDOT updates our inventory, they will disappear from this reference layer
                         and appear in the county road base layer.</p><br>
+
+                    <p>The 'Reference Layer' can be viewed by clicking the <strong>'View 2019 Markup'</strong> button in the 'Edit' menu.
+                        This layer will be updated weekly.</p><br>
+
+
+
+
                         <!-- <ul>
                             <li><strong>City Limit Interaction</strong>
                                 <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
