@@ -548,7 +548,7 @@
                         showLabels: false,
                         outFields: ["CNTY_NM", "CNTY_NBR"]
                     });
-                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/ArcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
+                    var cr_updatesURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcGIS/rest/services/CountyRoads_Updates/FeatureServer/0";
                     var cr_updatesLyr = new FeatureLayer(cr_updatesURL, {
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: true,
@@ -561,9 +561,10 @@
                         showLabels: false,
                         outFields: ["*"]
                     });
-                    var edits_2018URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CountyRoads_RefLayer_2018/FeatureServer/0";
-                    var edits_2018 = new FeatureLayer(edits_2018URL, {
-                        id: "ED2018",
+                    // var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_View/FeatureServer/0";
+                    var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_dev/FeatureServer/0";
+                    var edits_2019 = new FeatureLayer(edits_2019URL, {
+                        id: "ED2019",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         visible: false,
@@ -682,8 +683,9 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            edits_2018.setDefinitionExpression("SOURCE = '" + org + "'");
-                            map.addLayers([counties, edits_2018, countyroads, cr_updatesLyr]);
+                            edits_2019.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
+                            map.addLayers([counties, edits_2019, countyroads, cr_updatesLyr]);
+                            //map.addLayers([counties, edits_2019, countyroads]);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
@@ -701,9 +703,9 @@
                                 defaultSymbol: false,
                                 title: "Surface Type"
                             }, {
-                                layer: edits_2018,
+                                layer: edits_2019,
                                 defaultSymbol: false,
-                                title: "2018 Markup"
+                                title: "2019 Markup"
                             },
                             {
                                 layer: counties,
@@ -712,7 +714,7 @@
                             }
                         ];
                             templateLayers = [cr_updatesLyr];
-                            refLayers = [cr_updatesLyr, countyroads, edits_2018];
+                            refLayers = [cr_updatesLyr, countyroads, edits_2019];
                             serviceURL = cr_updatesURL;
                             editorInfos = [{
                                 'featureLayer': cr_updatesLyr,
@@ -776,7 +778,7 @@
                                     'label': "Number of Lanes"
                                 }]
                             }, {
-                                'featureLayer': edits_2018,
+                                'featureLayer': edits_2019,
                                 'showAttachments': false,
                                 'isEditable': false,
                                 'fieldInfos': [{
@@ -1581,16 +1583,16 @@
 
                     $("#layerToggle").click(function() {
                         if (!editView) {
-                            // map.addLayer(edits_2018);
-                            edits_2018.show();
-                            $("#layerToggle").html("Hide 2018 Markup");
+                            // map.addLayer(edits_2019);
+                            edits_2019.show();
+                            $("#layerToggle").html("Hide 2019 Markup");
                             editView = true;
                         }
                         else {
                             editView = false;
-                            // map.removeLayer(edits_2018);
-                            edits_2018.hide();
-                            $("#layerToggle").html("View 2018 Markup");
+                            // map.removeLayer(edits_2019);
+                            edits_2019.hide();
+                            $("#layerToggle").html("View 2019 Markup");
                         }
                     });
                     $("#needHelp").click(function() {
@@ -1825,11 +1827,13 @@
             }
             function checkStorage() {
                 if (localStorage.getItem("noDisplay") !== null) {
-                        $('#aboutModal').modal("hide");
+                        // $('#aboutModal').modal("hide");
+                        $('#editInfoModal').modal("hide");
                         // $('#noDisplay').hide();
                     }
                 else {
-                    $('#aboutModal').modal("show");
+                    //$('#aboutModal').modal("show");
+                    $('#editInfoModal').modal("show");
                     $('#noDisplay').show();
                 }
             }
@@ -1915,8 +1919,8 @@
                                     </a>
                                     <br>
                                     <div>
-                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2018 Markup">View 2018 Markup</button>
-                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2018 Markup" data-toggle='modal' data-target='#editInfoModal'>
+                                        <button type="button" class="btn btn-default" id="layerToggle"title="Click to View/Hide 2019 Markup">View 2019 Markup</button>
+                                        <button type="button" class="btn btn-default" id="editInfoBtn" title="About 2019 Markup" data-toggle='modal' data-target='#editInfoModal'>
                                             <span class="glyphicon glyphicon-question-sign">
                                             </span>
                                         </button>
@@ -2098,7 +2102,7 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.3.0)</h3>
+                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.4.0)</h3>
               </div>
               <div class="modal-body">
                 <h4>Release notes:</h4>
@@ -2129,17 +2133,14 @@
                     <li><strong>Jump to Google</strong>
                       <p>A button that opens a new browser tab in Google Maps centered at the current location in DUSA. Useful for examining roads with Street View</p>
                     </li>
-                    <li><strong>2018 Reference Layer</strong>
-                      <p>A new ‘reference layer’ was added, which shows the markups submitted in 2018
-                          that <i>did not</i> meet the criteria for a county road, or were not updated for another reason</p>
-                    </li>
+
                 </ul>
 
 
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
-                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
+                <!-- <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button> -->
               </div>
             </div>
           </div>
@@ -2153,13 +2154,23 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="editInfoModalLabel">2018 Markup Information</h3>
+                  <h3 class="modal-title" id="editInfoModalLabel">2019 Markup Information</h3>
               </div>
               <div class="modal-body">
-                <h4>About 2018 Markups that did not meet criteria</h4>
-                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2018 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
-                        or were not updated for another reason. Possible reasons include: </p><br>
-                        <ul>
+                <!-- <h4>About 2019 Markups that did not meet criteria</h4> -->
+                    <!-- <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                        or were not updated for another reason. Possible reasons include: </p><br> -->
+                    <p>A 'Reference Layer' was added to show the markups that were submitted by August 31, 2019.
+                        As TxDOT updates our inventory, they will disappear from this reference layer
+                        and appear in the county road base layer.</p><br>
+
+                    <p>The 'Reference Layer' can be viewed by clicking the <strong>'View 2019 Markup'</strong> button in the 'Edit' menu.
+                        This layer will be updated weekly.</p><br>
+
+
+
+
+                        <!-- <ul>
                             <li><strong>City Limit Interaction</strong>
                                 <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
                                 Until we are able to update a city boundary, we cannot update the affected county roads and city streets.</p>
@@ -2173,16 +2184,16 @@
                             <li><strong>Markup Unclear</strong>
                             </li><br>
                             <li><strong>Other Reason</strong></li><br>
-                        </ul>
+                        </ul> -->
                         <h4>Questions?</h4>
                         <div>
                             Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at
                             <a href="mailto:TPP-GIS@txdot.gov?Subject=CRI%20DUSA%20Question" target="_top" style="color:blue;">TPP-GIS@txdot.gov</a></p>
                         </div>
-
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-secondary" id="noDisplay" data-dismiss="modal" style="display:none" onclick="noDisplay()">Don't Show This Again</button>
               </div>
             </div>
           </div>
