@@ -561,8 +561,9 @@
                         showLabels: false,
                         outFields: ["*"]
                     });
+                    // alternate this layer twice yearly as updates are processed (markups/refLayer)
                     // var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_View/FeatureServer/0";
-                    var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_dev/FeatureServer/0";
+                    var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_RefLayer_2019/FeatureServer/0";
                     var edits_2019 = new FeatureLayer(edits_2019URL, {
                         id: "ED2019",
                         mode: FeatureLayer.MODE_ONDEMAND,
@@ -705,7 +706,7 @@
                             }, {
                                 layer: edits_2019,
                                 defaultSymbol: false,
-                                title: "2019 Markup"
+                                title: "Does Not Meet Criteria"
                             },
                             {
                                 layer: counties,
@@ -2106,7 +2107,7 @@
               </div>
               <div class="modal-body">
                 <h4>Release notes:</h4>
-                <p>On March 21, 2019, the valid updates submitted from 2018 were applied to the County Road Base Layer.
+                <p>In June 2020, the valid updates submitted from 2019 were updated in DUSA.
                 Several key enhancements were made to the Application in response to feedback from the Counties, including the following:</p><br>
                 <ul>
                     <li><strong>Menu Panel Layout</strong>
@@ -2157,20 +2158,17 @@
                   <h3 class="modal-title" id="editInfoModalLabel">2019 Markup Information</h3>
               </div>
               <div class="modal-body">
-                <!-- <h4>About 2019 Markups that did not meet criteria</h4> -->
-                    <!-- <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
-                        or were not updated for another reason. Possible reasons include: </p><br> -->
-                    <p>A 'Reference Layer' was added to show the markups that were submitted by August 31, 2019.
+                <h4>About 2019 Markups that did not meet criteria</h4>
+                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                        or were not updated for another reason. Possible reasons include: </p><br>
+                    <!-- <p>A 'Reference Layer' was added to show the markups that were submitted by August 31, 2019.
                         As TxDOT updates our inventory, they will disappear from this reference layer
                         and appear in the county road base layer.</p><br>
 
                     <p>The 'Reference Layer' can be viewed by clicking the <strong>'View 2019 Markup'</strong> button in the 'Edit' menu.
-                        This layer will be updated weekly.</p><br>
+                        This layer will be updated weekly.</p><br> -->
 
-
-
-
-                        <!-- <ul>
+                        <ul>
                             <li><strong>City Limit Interaction</strong>
                                 <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
                                 Until we are able to update a city boundary, we cannot update the affected county roads and city streets.</p>
@@ -2184,7 +2182,7 @@
                             <li><strong>Markup Unclear</strong>
                             </li><br>
                             <li><strong>Other Reason</strong></li><br>
-                        </ul> -->
+                        </ul>
                         <h4>Questions?</h4>
                         <div>
                             Please contact TxDOT - Transportation, Planning, and Programming's Data Management Section at
