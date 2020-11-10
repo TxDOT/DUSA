@@ -562,10 +562,10 @@
                         outFields: ["*"]
                     });
                     // alternate this layer twice yearly as updates are processed (markups/refLayer)
-                    // var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_View/FeatureServer/0";
-                    var edits_2019URL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_RefLayer_2019/FeatureServer/0";
-                    var edits_2019 = new FeatureLayer(edits_2019URL, {
-                        id: "ED2019",
+                    // var editsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_Markups_2019_View/FeatureServer/0";
+                    var editsURL = "https://services.arcgis.com/KTcxiTD9dsQw4r7Z/arcgis/rest/services/CRI_RefLayer/FeatureServer/0";
+                    var edits = new FeatureLayer(editsURL, {
+                        id: "Edit",
                         mode: FeatureLayer.MODE_ONDEMAND,
                         showLabels: false,
                         visible: false,
@@ -684,9 +684,9 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            edits_2019.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
-                            map.addLayers([counties, edits_2019, countyroads, cr_updatesLyr]);
-                            //map.addLayers([counties, edits_2019, countyroads]);
+                            edits.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
+                            map.addLayers([counties, edits, countyroads, cr_updatesLyr]);
+                            //map.addLayers([counties, edits, countyroads]);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
                             var pieces = selectorLabel.split(" - ");
                             var theName = pieces[0];
@@ -704,7 +704,7 @@
                                 defaultSymbol: false,
                                 title: "Surface Type"
                             }, {
-                                layer: edits_2019,
+                                layer: edits,
                                 defaultSymbol: false,
                                 title: "Does Not Meet Criteria"
                             },
@@ -715,7 +715,7 @@
                             }
                         ];
                             templateLayers = [cr_updatesLyr];
-                            refLayers = [cr_updatesLyr, countyroads, edits_2019];
+                            refLayers = [cr_updatesLyr, countyroads, edits];
                             serviceURL = cr_updatesURL;
                             editorInfos = [{
                                 'featureLayer': cr_updatesLyr,
@@ -779,7 +779,7 @@
                                     'label': "Number of Lanes"
                                 }]
                             }, {
-                                'featureLayer': edits_2019,
+                                'featureLayer': edits,
                                 'showAttachments': false,
                                 'isEditable': false,
                                 'fieldInfos': [{
@@ -1584,15 +1584,15 @@
 
                     $("#layerToggle").click(function() {
                         if (!editView) {
-                            // map.addLayer(edits_2019);
-                            edits_2019.show();
+                            // map.addLayer(edits);
+                            edits.show();
                             $("#layerToggle").html("Hide 2019 Markup");
                             editView = true;
                         }
                         else {
                             editView = false;
-                            // map.removeLayer(edits_2019);
-                            edits_2019.hide();
+                            // map.removeLayer(edits);
+                            edits.hide();
                             $("#layerToggle").html("View 2019 Markup");
                         }
                     });
