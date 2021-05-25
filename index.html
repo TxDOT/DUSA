@@ -1596,6 +1596,8 @@
                       $("#editInfoModal h3:contains('${yr}')").html(lastYear + " Markup Information")//Changed djp
                       $("#updatetwo h4:contains('${yr}')").html("About "+ lastYear + " Markups that did not meet criteria")//Changed djp
                       $("#updatetwo p:contains('${yr}')").html("A ‘reference layer’ was added, which shows the markups submitted in " + lastYear + " that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style='text-decoration:underline;'><strong>criteria for a county road</strong></a>, or were not updated for another reason. Possible reasons include:") //Changed djp
+                      $("#layerToggle").html("View " + lastYear + " Markup");
+                      $("#layerToggle").attr("title", "Click to View/Hide " + lastYear + " Markup"); //Changed djp
                     });
 
                     $("#layerToggle").click(function() {
@@ -1648,13 +1650,8 @@
 
                     $(document).ready(function()
                     {
-                        $("#layerToggle").html("View " + lastYear + " Markup"); //Changed djp
-                        $("#layerToggle").attr("title", "Click to View/Hide " + lastYear + " Markup"); //Changed djp
+
                         $("#editInfoBtn").attr("title", "About " + lastYear + " Markup"); //Changed djp
-                        //$("#updateone p:contains('${yr}')").html("In June " + yr + ", the valid updates submitted from " + autoYr + " were updated in DUSA. Several key enhancements were made to the Application in response to feedback from the Counties, including the following:")
-                        //$("#editInfoModal h3:contains('${yr}')").html(lastYear + " Markup Information")//Changed djp
-                        //$("#updatetwo h4:contains('${yr}')").html("About "+ lastYear + " Markups that did not meet criteria")//Changed djp
-                        //$("#updatetwo p:contains('${yr}')").html("A ‘reference layer’ was added, which shows the markups submitted in " + lastYear + " that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style='text-decoration:underline;'><strong>criteria for a county road</strong></a>, or were not updated for another reason. Possible reasons include:") //Changed djp
                     });
 
                     $('#googleLink').click(function() {
