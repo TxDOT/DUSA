@@ -447,6 +447,9 @@
                     var m = d.getMonth() + 1;
                     var day = d.getDate();
                     var yr = d.getFullYear();
+                    var timestamp; //changed djp
+                    var currentYear; //changed djp
+                    var lastYear; //changed djp
                     var t = m.toString() + "/" + day.toString() + "/" + yr.toString();
                     parser.parse();
                     // config.defaults.io.proxyUrl = "http://localhost/proxy/proxy.ashx"; //mw
@@ -684,7 +687,7 @@
                             cr_updatesLyr.setDefinitionExpression("SOURCE = '" + org + "'");
                             counties.setDefinitionExpression(expression);
                             countyroads.setDefinitionExpression("CNTY_NBR = '" + org + "'");
-                            edits.setDefinitionExpression("SOURCE = '" + org + "' And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')");
+                            edits.setDefinitionExpression("SOURCE = '" + org + "'");// And (STATUS = '1' Or STATUS = '2' Or STATUS = '3')"); //changed djp
                             map.addLayers([counties, edits, countyroads, cr_updatesLyr]);
                             //map.addLayers([counties, edits, countyroads]);
                             var selectorLabel = $("#selectOrg option[value='" + org + "']").text();
@@ -1582,18 +1585,33 @@
 
                     ////JQUERY EVENTS
 
+                    edits.on("load", function layerLoad(event)
+                    {
+                      timestamp = Number(edits._json.match(/{"lastEditDate":[0-9]{0,100}}/g)[0].match(/[0-9]{0,13}/g)[16]); //changed djp
+                      console.log(timestamp); //changed djp
+                      var date = new Date(timestamp); //changed djp
+                      currentYear = Number(date.getFullYear()); //changed djp
+                      lastYear = currentYear-1; //changed djp
+                      console.log(currentYear);//changed djp
+                      $("#editInfoModal h3:contains('${yr}')").html(lastYear + " Markup Information")//Changed djp
+                      $("#updatetwo h4:contains('${yr}')").html("About "+ lastYear + " Markups that did not meet criteria")//Changed djp
+                      $("#updatetwo p:contains('${yr}')").html("A ‘reference layer’ was added, which shows the markups submitted in " + lastYear + " that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style='text-decoration:underline;'><strong>criteria for a county road</strong></a>, or were not updated for another reason. Possible reasons include:") //Changed djp
+                      $("#layerToggle").html("View " + lastYear + " Markup");
+                      $("#layerToggle").attr("title", "Click to View/Hide " + lastYear + " Markup"); //Changed djp
+                    });
+
                     $("#layerToggle").click(function() {
                         if (!editView) {
                             // map.addLayer(edits);
                             edits.show();
-                            $("#layerToggle").html("Hide 2019 Markup");
+                            $("#layerToggle").html("Hide " + lastYear + " Markup"); //changed djp
                             editView = true;
                         }
                         else {
                             editView = false;
                             // map.removeLayer(edits);
                             edits.hide();
-                            $("#layerToggle").html("View 2019 Markup");
+                            $("#layerToggle").html("View " + lastYear + " Markup"); //changed djp
                         }
                     });
                     $("#needHelp").click(function() {
@@ -1629,6 +1647,13 @@
                             $('#basemapToggle').html("View TxDOT Imagery");
                         }
                     });
+
+                    $(document).ready(function()
+                    {
+
+                        $("#editInfoBtn").attr("title", "About " + lastYear + " Markup"); //Changed djp
+                    });
+
                     $('#googleLink').click(function() {
                     	var ctr = map.extent.getCenter();
                         var lat = ctr.getLatitude();
@@ -2103,11 +2128,11 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.4.0)</h3>
+                  <h3 class="modal-title" id="aboutModalLabel">About (DUSA v5.4.1)</h3>
               </div>
               <div class="modal-body">
                 <h4>Release notes:</h4>
-                <p>In June 2020, the valid updates submitted from 2019 were updated in DUSA.
+                <p>Each Spring, the valid updates submitted from the previous year are updated in DUSA. <!--changed djp -->
                 Several key enhancements were made to the Application in response to feedback from the Counties, including the following:</p><br>
                 <ul>
                     <li><strong>Menu Panel Layout</strong>
@@ -2155,12 +2180,12 @@
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                   </button>
-                  <h3 class="modal-title" id="editInfoModalLabel">2019 Markup Information</h3>
+                  <h3 class="modal-title" id="editInfoModalLabel">${yr} Markup Information</h3> <!--changed djp -->
               </div>
-              <div class="modal-body">
-                <h4>About 2019 Markups that did not meet criteria</h4>
-                    <p>A ‘reference layer’ was added, which shows the markups submitted in 2019 that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
-                        or were not updated for another reason. Possible reasons include: </p><br>
+              <div class="modal-body" id=updatetwo>
+                <h4>About ${yr} Markups that did not meet criteria</h4> <!--changed djp -->
+                    <p>A ‘reference layer’ was added, which shows the markups submitted in ${yr} that did not meet the <a href='./resources/COUNTY_ROAD_CRITERIA.pdf' target='CRI Criteria' title='TxDOT Definition of a County Road' style="text-decoration:underline;"><strong>criteria for a county road</strong></a>,
+                        or were not updated for another reason. Possible reasons include: </p><br> <!--changed djp -->
                     <!-- <p>A 'Reference Layer' was added to show the markups that were submitted by August 31, 2019.
                         As TxDOT updates our inventory, they will disappear from this reference layer
                         and appear in the county road base layer.</p><br>
@@ -2169,10 +2194,10 @@
                         This layer will be updated weekly.</p><br> -->
 
                         <ul>
-                            <li><strong>City Limit Interaction</strong>
+                            <!-- <li><strong>City Limit Interaction</strong>
                                 <p>Several of last year’s markups were not applied to the inventory due to a backlog in our city limit boundary updates.
                                 Until we are able to update a city boundary, we cannot update the affected county roads and city streets.</p>
-                            </li>
+                            </li> changed djp-->
                             <li><strong>Markup was on a Private Road</strong>
                             </li><br>
                             <li><strong>Markup was on a Gated Road</strong>
